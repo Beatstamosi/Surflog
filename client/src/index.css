@@ -5,12 +5,46 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Brand Core */
+  --color-navy: #000033; /* Primary logo color */
+  --color-blue: #336699; /* Background / secondary brand blue */
+  --color-sky: #5fa8d3; /* Light accent blue */
+  --color-orange: #ff9900; /* Call-to-action / highlight */
+  --color-yellow: #ffd166; /* Secondary warm accent */
+
+  /* Neutrals */
+  --color-white: #ffffff;
+  --color-offwhite: #f5f7fa;
+  --color-lightgray: #e0e3e7;
+  --color-gray: #9ea7b3;
+  --color-darkgray: #4a4a4a;
+
+  /* UI tones */
+  --color-success: #2ecc71; /* Green for good surf */
+  --color-warning: #f39c12; /* Medium conditions */
+  --color-danger: #e74c3c; /* Poor conditions */
+  --color-info: #3498db; /* For informational tags */
+
+  /* Text */
+  --text-primary: var(--color-navy);
+  --text-secondary: var(--color-gray);
+  --text-invert: var(--color-white);
+
+  /* Backgrounds */
+  --bg-primary: var(--color-white);
+  --bg-secondary: var(--color-offwhite);
+  --bg-accent: var(--color-blue);
+
+  /* Borders and shadows */
+  --border-color: rgba(0, 0, 0, 0.1);
+  --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 a {

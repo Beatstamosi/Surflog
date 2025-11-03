@@ -1,4 +1,4 @@
-import { APIURL } from "./APIUrl";
+import { apiClient } from "../utils/apiClient";
 
 function TestForecast() {
   const clickHandler = async (
@@ -7,21 +7,10 @@ function TestForecast() {
     e.preventDefault();
 
     try {
-      const res = await fetch(`${APIURL}/forecast`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        credentials: "include",
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        console.log(data.report);
-      }
+      const data = await apiClient("/forecast", { auth: false });
+      console.log(data.report);
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching forecast:", err);
     }
   };
 
