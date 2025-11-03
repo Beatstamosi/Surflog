@@ -16,7 +16,9 @@
   "dependencies": {
     "@prisma/client": "^6.12.0",
     "@quixo3/prisma-session-store": "^3.1.13",
+    "axios": "^1.13.1",
     "bcryptjs": "^3.0.2",
+    "cheerio": "^1.1.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "ejs": "^3.1.10",

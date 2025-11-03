@@ -1,13 +1,14 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import dotenv from "dotenv";
 import passport from "passport";
 import authRouter from "./routes/auth.js";
 import "./config/passport.js";
+import forecastRouter from "./routes/forecast.js";
 
-// Give access to environment variables
+// Load environment variables FIRST
 dotenv.config();
 
 const app = express();
@@ -33,9 +34,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Authentication Route
 app.use("/user", authRouter);
-
-// API route example
-app.get("/", (req, res) => res.render("index", { user: req.user }));
+app.use("/forecast", forecastRouter);
 
 // Serve static files in production
 if (process.env.NODE_ENV === "production") {

@@ -4,6 +4,7 @@ import LogOut from "./Authentication/LogOut/LogOut.jsx";
 import Login from "./Authentication/Login/Login.jsx";
 import SignUp from "./Authentication/Sign Up/SignUp.jsx";
 import RequireAuth from "./Authentication/RequireAuth.jsx";
+import TestForecast from "./TestForecast.js";
 
 const routes = [
   {
@@ -30,6 +31,10 @@ const routes = [
         <LogOut />
       </RequireAuth>
     ),
+  },
+  {
+    path: "/forecast",
+    element: <TestForecast />,
   },
 ];
 
