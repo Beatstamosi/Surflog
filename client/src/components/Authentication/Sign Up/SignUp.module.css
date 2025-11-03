@@ -1,0 +1,107 @@
+* {
+  box-sizing: border-box;
+}
+
+.pageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  width: 100vw;
+}
+
+.formContainer {
+  width: 100%;
+  max-width: 700px;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+input:focus {
+  border-color: #0077ff;
+  outline: none;
+}
+
+.passwordMatchWarning,
+.emailWrongWarning {
+  color: #d32f2f;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.emailWrongWarning {
+  justify-self: flex-start;
+}
+
+/* Buttons */
+.btnActive,
+.btnDisabled {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.btnActive {
+  background-color: #0077ff;
+  color: white;
+  cursor: pointer;
+}
+
+.btnActive:hover {
+  background-color: #005fd1;
+}
+
+.btnDisabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .formContainer {
+    padding: 1.25rem;
+    border-radius: 8px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  input,
+  .btnActive,
+  .btnDisabled {
+    font-size: 0.95rem;
+  }
+}

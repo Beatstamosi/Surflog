@@ -1,0 +1,19 @@
+# === Node ===
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# === Vite Build ===
+client/dist/
+
+# === Express Build or Temp Files ===
+server/build/
+server/tmp/
+server/.cache/
+
+# === Environment Variables ===
+.env
+.env.production
+client/.env
+client/.env.production
+server/.env
