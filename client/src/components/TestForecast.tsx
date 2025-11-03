@@ -18,7 +18,7 @@ function TestForecast() {
       const data = await res.json();
 
       if (res.ok) {
-        console.log(data.forecast);
+        console.log(data.report);
       }
     } catch (err) {
       console.error(err);
