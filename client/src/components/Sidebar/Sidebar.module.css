@@ -1,6 +1,5 @@
 .sidebarWrapper {
-  background-color: var(--color-lightgray);
-  width: 220px;
+  background-color: var(--bg-secondary);
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -8,7 +7,7 @@
   padding-top: 80px;
   gap: 80px;
   padding-left: 20px;
-  border-right: 1px solid var(--color-navy);
+  box-shadow: var(--shadow-light);
 }
 
 .sidebarBlock {
@@ -26,7 +25,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  transition: all 0.3s ease-out;
+  transition: all 0.2s ease-out;
 }
 .sidebarLink:hover {
   color: var(--color-orange);

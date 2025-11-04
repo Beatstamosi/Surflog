@@ -45,7 +45,7 @@ function Login() {
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
-        await fetchUser();
+        fetchUser();
         navigate("/");
       } else {
         setLoginFailed(true);

@@ -1,7 +1,13 @@
 import { useAuth } from "../useAuth.jsx";
 import { useNavigate } from "react-router-dom";
+import { MdOutlineLogout } from "react-icons/md";
+import style from "./LogOut.module.css";
 
-function LogOut() {
+type LogOutProps = {
+  className: string;
+};
+
+function LogOut({ className }: LogOutProps) {
   const { setUser } = useAuth();
   const navigate = useNavigate();
 
@@ -15,7 +21,15 @@ function LogOut() {
     navigate("/");
   };
 
-  return <button onClick={(e) => logOutHandler(e)}>Log Out</button>;
+  return (
+    <button
+      onClick={logOutHandler}
+      className={`${style.logOutButton} ${className || ""}`}
+    >
+      <MdOutlineLogout size={"1.5em"} />
+      Log Out
+    </button>
+  );
 }
 
 export default LogOut;

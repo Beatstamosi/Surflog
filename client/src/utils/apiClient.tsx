@@ -1,5 +1,5 @@
 // src/utils/apiClient.ts
-import { APIURL } from "./APIUrl";
+import { APIURL } from "./apiURL";
 
 interface FetchOptions extends RequestInit {
   auth?: boolean; // Add token automatically if true

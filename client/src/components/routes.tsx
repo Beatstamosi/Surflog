@@ -1,6 +1,5 @@
 import App from "../App";
 import ErrorPage from "./ErrorPage/ErrorPage.jsx";
-import LogOut from "./Authentication/LogOut/LogOut.jsx";
 import Login from "./Authentication/Login/Login.jsx";
 import SignUp from "./Authentication/Sign Up/SignUp.jsx";
 import RequireAuth from "./Authentication/RequireAuth.jsx";
@@ -11,6 +10,12 @@ const routes = [
     path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/forecast",
+        element: <TestForecast />,
+      },
+    ],
   },
   {
     path: "/login",
@@ -19,18 +24,6 @@ const routes = [
   {
     path: "/sign-up",
     element: <SignUp />,
-  },
-  {
-    path: "/logout",
-    element: (
-      <RequireAuth>
-        <LogOut />
-      </RequireAuth>
-    ),
-  },
-  {
-    path: "/forecast",
-    element: <TestForecast />,
   },
 ];
 

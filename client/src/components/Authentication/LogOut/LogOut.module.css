@@ -1,0 +1,13 @@
+.logOutButton {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+}
