@@ -4,3 +4,8 @@
   padding: 2rem;
   text-align: center;
 }
+
+.pageWrapperDesktop {
+  display: grid;
+  grid-column: 1fr 3fr;
+}

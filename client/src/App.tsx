@@ -1,20 +1,42 @@
+import { Outlet } from "react-router-dom";
 import { useAuth } from "./components//Authentication/useAuth.jsx";
-import LogOut from "./components/Authentication/LogOut/LogOut.jsx";
+import { useMediaQuery } from "react-responsive";
+import style from "./App.module.css";
+import Sidebar from "./components/Sidebar/Sidebar.js";
 
 function App() {
-  const { user, loading } = useAuth();
+  const isDesktop = useMediaQuery({ minWidth: 768 });
+  const { loading } = useAuth();
 
   if (loading) return <h1>Loading...</h1>;
 
-  return (
-    <>
-      <h1>{user?.email || "No user found"}</h1>
-      <p>
-        {user?.firstName} {user?.lastName}
-      </p>
-      <LogOut />
-    </>
-  );
+  // if desktop display:
+  // navbar as sidebar
+  // Outlet on the right
+
+  if (isDesktop) {
+    return (
+      <>
+        <div className={style.pageWrapperDesktop}>
+          <Sidebar />
+          <Outlet />
+          // Footer
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div>Navbar Mobile</div>
+        <Outlet />
+        // Footer
+      </>
+    );
+  }
+
+  // if mobile
+  // navbar logo + hamburger
+  // outlet below
 }
 
 export default App;
