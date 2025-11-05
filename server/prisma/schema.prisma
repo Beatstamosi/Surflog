@@ -15,8 +15,10 @@ datasource db {
 
 model User {
   id             Int             @id @default(autoincrement())
-  name           String
+  firstName      String
+  lastName       String
   email          String          @unique
+  password       String
   bio            String?
   profilePicture Bytes?
   signedUpAt     DateTime        @default(now())
@@ -39,8 +41,8 @@ model Board {
   size     String
   volume   Float
   name     String
-  ownerId   Int
-  owner     User      @relation("UserBoards", fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId  Int
+  owner    User      @relation("UserBoards", fields: [ownerId], references: [id], onDelete: Cascade)
   quiver   Quiver[]  @relation("BoardQuiver")
   sessions Session[]
 
@@ -61,38 +63,37 @@ model Quiver {
 }
 
 model Forecast {
-  id             Int       @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   spotName       String
   region         String?
   surflineSpotId String?
-  description    String?   // surf.description (e.g. "Waist to chest")
-  size           String?   // e.g. "Surf: 0.9 - 1.2"
-  waveEnergy     String?   // e.g. "98kJ"
-  date           DateTime  // from sessionStart
-  tideHeight     String?   // e.g. "2.56 ft"
-  tideType       String?   // e.g. "NORMAL"
+  description    String? // surf.description (e.g. "Waist to chest")
+  size           String? // e.g. "Surf: 0.9 - 1.2"
+  waveEnergy     String? // e.g. "98kJ"
+  date           DateTime // from sessionStart
+  tideHeight     String? // e.g. "2.56 ft"
+  tideType       String? // e.g. "NORMAL"
   windDirection  String?
   windSpeed      String?
   windGust       String?
 
   // Multiple swells — separate table for normalization
-  swells         Swell[]   
+  swells Swell[]
 
-  sessions       Session[]
+  sessions Session[]
 }
 
 model Swell {
-  id          Int       @id @default(autoincrement())
-  forecastId  Int
-  name        String?   // "Swell 1", "Swell 2"...
-  height      String?   // "Height: 0.60122"
-  period      String?   // "Period: 13 seconds"
-  power       String?   // "Power: 82kJ"
-  direction   String?   // "Direction: 218.54633"
+  id         Int     @id @default(autoincrement())
+  forecastId Int
+  name       String? // "Swell 1", "Swell 2"...
+  height     String? // "Height: 0.60122"
+  period     String? // "Period: 13 seconds"
+  power      String? // "Power: 82kJ"
+  direction  String? // "Direction: 218.54633"
 
   forecast Forecast @relation(fields: [forecastId], references: [id], onDelete: Cascade)
 }
-
 
 model Session {
   id                   Int       @id @default(autoincrement())
