@@ -4,11 +4,11 @@
   left: 0;
   width: 100vw;
   background-color: var(--bg-primary);
-  border-top: 2px solid var(--color-orange);
   padding: 10px 0px;
   display: flex;
   justify-content: space-around;
   z-index: 1000;
+  box-shadow: var(--shadow-medium);
 }
 
 .navBarLink {
