@@ -1,6 +1,6 @@
 import passport from "passport";
 import bcrypt from "bcryptjs";
-import { User } from "../types/User.js";
+import { User } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
 import userExists from "../services/userServices.js";
 import prisma from "../lib/prisma.js";
@@ -63,14 +63,16 @@ const loginHandler = (req: Request, res: Response, next: NextFunction) => {
 
 function getUser(req: Request, res: Response) {
   if (req.user) {
-    // Send limited user data (avoid sending password, etc.)
-    const { id, email, firstname, lastname } = req.user;
+    // Send limited user data
+    const { id, email, firstName, lastName, bio, profilePicture } = req.user;
     res.json({
       user: {
         id,
         email,
-        firstName: firstname,
-        lastName: lastname,
+        firstName,
+        lastName,
+        bio,
+        profilePicture,
       },
     });
   } else {

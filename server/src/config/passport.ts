@@ -12,7 +12,7 @@ if (!process.env.JWT_SECRET) {
 const JWT_SECRET = process.env.JWT_SECRET;
 
 interface JwtPayload {
-  id: string;
+  id: number | undefined;
   iat: number;
   exp: number;
 }
