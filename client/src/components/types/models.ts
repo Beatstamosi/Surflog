@@ -3,8 +3,8 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  bio?: string | null;
-  profilePicture?: string | null; // Will be a base64 string or image URL on frontend
+  bio: string;
+  profilePicture: string;
   signedUpAt: string; // ISO date
   quiver?: Quiver[];
   savedPosts?: SavedPost[];

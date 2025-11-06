@@ -1,13 +1,9 @@
 import style from "./MyProfile.module.css";
 import { useAuth } from "../Authentication/useAuth";
-import fallBackProfileImg from "../../assets/surflog_logo.png";
 import { PiUploadSimple } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useLogOut from "../Authentication/LogOut/useLogOut";
-
-// TODO: Implement fallBackProfileImg in Backend
-// Set bio in backend
 
 export default function MyProfile() {
   const { user } = useAuth();
@@ -101,10 +97,7 @@ export default function MyProfile() {
       {/* Profile Picture */}
       <div className={style.containerProfileImg}>
         <div className={style.profileImgWrapper}>
-          <img
-            src={previewUrl || user?.profilePicture || fallBackProfileImg}
-            alt="Profile-Preview"
-          />
+          <img src={previewUrl || user?.profilePicture} alt="Profile-Preview" />
           <div className={style.iconUploadImg}>
             <input
               type="file"
