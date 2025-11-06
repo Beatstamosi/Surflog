@@ -64,7 +64,7 @@ function SignUp() {
   const checkForEmailExists = async (emailToCheck: string) => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/user/check-email`,
+        `${import.meta.env.VITE_API_BASE_URL}/auth/check-email`,
         {
           method: "POST",
           headers: {
@@ -109,7 +109,7 @@ function SignUp() {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/user/sign-up`,
+        `${import.meta.env.VITE_API_BASE_URL}/auth/sign-up`,
         {
           method: "POST",
           headers: {

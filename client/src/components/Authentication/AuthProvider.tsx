@@ -26,7 +26,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const fetchUser = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/me`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

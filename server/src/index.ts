@@ -7,6 +7,7 @@ import passport from "passport";
 import authRouter from "./routes/auth.js";
 import "./config/passport.js";
 import forecastRouter from "./routes/forecast.js";
+import userRouter from "./routes/user.js";
 
 // Load environment variables FIRST
 dotenv.config();
@@ -33,8 +34,9 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Authentication Route
-app.use("/user", authRouter);
+app.use("/auth", authRouter);
 app.use("/forecast", forecastRouter);
+app.use("/user", userRouter);
 
 // Serve static files in production
 if (process.env.NODE_ENV === "production") {

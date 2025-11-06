@@ -6,9 +6,8 @@ import { useState } from "react";
 import useLogOut from "../Authentication/LogOut/useLogOut";
 import LogOutBtn from "../Authentication/LogOut/LogOutBtn";
 import { useMediaQuery } from "react-responsive";
-
-// TODO: 
-  // save profile + file upload
+import { apiClient } from "../../utils/apiClient";
+import { supabase } from "../../utils/supabaseClient";
 
 export default function MyProfile() {
   const { user } = useAuth();
@@ -30,30 +29,68 @@ export default function MyProfile() {
   const handleSaveProfile = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    const formData = new FormData();
-
-    if (selectedFile) {
-      formData.append("profile_picture", selectedFile);
-    }
-
-    formData.append("bio", bio);
-
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/user/update`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          credentials: "include",
-          body: formData,
-        }
-      );
+      let profilePictureUrl = user?.profilePicture; // Keep existing if no new file
 
-      if (res.ok) {
-        navigate(0);
+      // Upload new profile picture if selected
+      if (selectedFile) {
+        const fileExt = selectedFile.name.split(".").pop();
+        const fileName = `${user?.id}-${Date.now()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        // Upload to Supabase Storage
+        const { error: uploadError } = await supabase.storage
+          .from("Profile Pictures")
+          .upload(filePath, selectedFile, {
+            cacheControl: "3600",
+            upsert: false,
+          });
+
+        if (uploadError) {
+          throw new Error(`Upload failed: ${uploadError.message}`);
+        }
+
+        // Create signed URL for private bucket (10 year expiry)
+        const { data: signedUrlData, error: signedError } =
+          await supabase.storage
+            .from("Profile Pictures")
+            .createSignedUrl(filePath, 60 * 60 * 24 * 365 * 10); // 10 years
+
+        if (signedError) {
+          throw new Error(`Signed URL creation failed: ${signedError.message}`);
+        }
+
+        profilePictureUrl = signedUrlData.signedUrl;
+
+        // Delete old profile picture to save storage
+        if (
+          user?.profilePicture &&
+          !user.profilePicture.includes("default_avatar.jpg")
+        ) {
+          try {
+            // Extract filename from old URL
+            const urlParts = user.profilePicture.split("/");
+            const oldFileName = urlParts[urlParts.length - 1].split("?")[0]; // Remove query params
+            await supabase.storage
+              .from("Profile Pictures")
+              .remove([oldFileName]);
+          } catch (deleteErr) {
+            console.warn("Could not delete old profile picture:", deleteErr);
+            // No throw - proceed with update even if deletion fails
+          }
+        }
       }
+
+      // Update user profile with the signed URL
+      await apiClient("/user/update", {
+        method: "PUT",
+        body: JSON.stringify({
+          bio,
+          profilePicture: profilePictureUrl,
+        }),
+      });
+
+      navigate(0);
     } catch (err) {
       console.error("Error updating profile:", err);
       navigate("/error");
@@ -72,18 +109,9 @@ export default function MyProfile() {
     }
 
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/user/delete`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          credentials: "include",
-        }
-      );
+      const data = await apiClient("/user/delete", { method: "DELETE" });
 
-      if (res.ok) {
+      if (data.message === "User deleted successfully.") {
         logOutHandler(e);
       }
     } catch (err) {
