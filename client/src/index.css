@@ -26,6 +26,7 @@
   --color-darkgray: #4a4a4a;
 
   /* UI tones */
+  --color-epic: #c209c8; 
   --color-success: #2ecc71; /* Green for good surf */
   --color-warning: #f39c12; /* Medium conditions */
   --color-danger: #e74c3c; /* Poor conditions */

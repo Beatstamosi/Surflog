@@ -64,9 +64,8 @@
 }
 
 .ratingExcellent {
-  background-color: var(--color-info);
+  background-color: var(--color-epic);
   color: var(--color-white);
-  border-color: var(--color-blue);
 }
 
 /* Primary Grid Layout */

@@ -18,18 +18,27 @@ export default function ForecastDisplay({ forecast }: ForecastDisplayProps) {
 
   // Use official Surfline rating
   const getRatingClass = (ratingValue: number) => {
-    switch (ratingValue) {
+    // Round to nearest 0.5 to handle float values
+    const roundedRating = Math.round(ratingValue * 2) / 2;
+
+    switch (roundedRating) {
+      case 0.5:
       case 1:
         return style.ratingPoor;
+      case 1.5:
       case 2:
-        return style.ratingPoor;
+      case 2.5:
       case 3:
         return style.ratingFair;
+      case 3.5:
       case 4:
-        return style.ratingGood;
+      case 4.5:
       case 5:
-        return style.ratingExcellent;
+        return style.ratingGood;
       default:
+        // Handle out-of-bounds values
+        if (ratingValue < 1) return style.ratingPoor;
+        if (ratingValue > 5) return style.ratingExcellent;
         return style.ratingPoor;
     }
   };
