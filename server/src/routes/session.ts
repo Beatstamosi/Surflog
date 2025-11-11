@@ -6,6 +6,6 @@ const sessionRouter = Router();
 
 sessionRouter.use(validateJWTToken);
 
-sessionRouter.put("/", addSession);
+sessionRouter.post("/", addSession);
 
 export default sessionRouter;

@@ -13,7 +13,6 @@ const getForeCast = async (req: Request, res: Response) => {
     const sessionStart = createSessionDateString(startTimeSession as string);
 
     const report = await getSurfReport(sessionStart, spotName as string);
-    console.log(JSON.stringify(report, null, 2));
 
     res.status(201).json({ report });
   } catch (err) {

@@ -24,6 +24,9 @@ export default async function uploadImageToSupaBase(
     );
   }
 
+  // avoid duplicate file naming
+  const randomString = Math.random().toString(36).substring(2, 8);
+
   // Create safe timestamp
   if (!timeStamp) {
     timeStamp = Date.now().toString(); // Simple timestamp without special characters
@@ -33,7 +36,7 @@ export default async function uploadImageToSupaBase(
   }
 
   const fileExt = selectedFile.name.split(".").pop()?.toLowerCase();
-  const fileName = `${userId}-${timeStamp}.${fileExt}`;
+  const fileName = `${userId}-${timeStamp}-${randomString}.${fileExt}`;
   const filePath = `${fileName}`;
 
   try {

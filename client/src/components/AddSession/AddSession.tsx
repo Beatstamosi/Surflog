@@ -60,7 +60,7 @@ export default function AddSession() {
       const formValues = {
         sessionMatchForecast: formData.get("sessionMatchForecast") as string,
         description: formData.get("sessionNotes") as string,
-        boardId: formData.get("chooseBoard") as string,
+        boardId: parseInt(formData.get("chooseBoard") as string, 10),
       };
 
       if (selectedFile) {
