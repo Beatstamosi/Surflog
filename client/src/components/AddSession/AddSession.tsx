@@ -63,8 +63,6 @@ export default function AddSession() {
       await apiClient("/session", {
         method: "POST",
         body: JSON.stringify({
-          spotName,
-          startTimeSession,
           forecast,
           shareInFeed,
           sessionMatchForecast,
@@ -94,7 +92,7 @@ export default function AddSession() {
     setShareInFeed(false);
   };
 
-  console.log(startTimeSession);
+  console.log(forecast);
 
   if (sessionAddedConfirmation) {
     return (

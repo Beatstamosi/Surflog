@@ -67,12 +67,12 @@ model Forecast {
   spotName       String
   region         String?
   surflineSpotId String?
-  description    String? // surf.description (e.g. "Waist to chest")
-  size           String? // e.g. "Surf: 0.9 - 1.2"
-  waveEnergy     String? // e.g. "98kJ"
-  date           DateTime // from sessionStart
-  tideHeight     String? // e.g. "2.56 ft"
-  tideType       String? // e.g. "NORMAL"
+  description    String?
+  size           String? 
+  waveEnergy     String? 
+  date           DateTime 
+  tideHeight     String? 
+  tideType       String? 
   windDirection  String?
   windSpeed      String?
   windGust       String?
