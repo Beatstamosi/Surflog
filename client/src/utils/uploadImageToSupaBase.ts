@@ -48,15 +48,16 @@ export default async function uploadImageToSupaBase(
       throw new Error(`Upload failed: ${uploadError.message}`);
     }
 
-    const { data: publicUrlData } = supabase.storage
+    // Create signed URL for private bucket (10 year expiry for demo purposes)
+    const { data: signedUrlData, error: signedError } = await supabase.storage
       .from(bucketName)
-      .getPublicUrl(filePath);
+      .createSignedUrl(filePath, 60 * 60 * 24 * 365 * 10); // 10 years
 
-    if (!publicUrlData?.publicUrl) {
-      throw new Error("Failed to generate public URL");
+    if (signedError) {
+      throw new Error(`Signed URL creation failed: ${signedError.message}`);
     }
 
-    return publicUrlData.publicUrl;
+    return signedUrlData.signedUrl;
   } catch (error) {
     console.error("Image upload error:", error);
     throw error; // Re-throw to let caller handle it
