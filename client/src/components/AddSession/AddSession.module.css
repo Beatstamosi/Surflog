@@ -248,6 +248,45 @@
   box-shadow: none;
 }
 
+.sessionAdded {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  min-height: 60vh;
+}
+
+.sessionAdded p:first-child {
+  font-size: 4rem;
+  margin: 0 0 1.5rem 0;
+  animation: bounce 0.6s ease-in-out;
+}
+
+.sessionAdded p:last-child {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  80% {
+    transform: translateY(-5px);
+  }
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .formAddSession {
@@ -276,6 +315,20 @@
 
   .inputGroup {
     width: 100%;
+  }
+
+  .sessionAdded {
+    padding: 3rem 1.5rem;
+    min-height: 50vh;
+  }
+
+  .sessionAdded p:first-child {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .sessionAdded p:last-child {
+    font-size: 1.25rem;
   }
 }
 
@@ -317,5 +370,17 @@
 
   .toggleGroup {
     padding: 0.75rem;
+  }
+
+  .sessionAdded {
+    padding: 2rem 1rem;
+  }
+
+  .sessionAdded p:first-child {
+    font-size: 2.5rem;
+  }
+
+  .sessionAdded p:last-child {
+    font-size: 1.1rem;
   }
 }

@@ -3,6 +3,10 @@ import type { Forecast, Board } from "../types/models";
 import { apiClient } from "../../utils/apiClient";
 import style from "./AddSession.module.css";
 import ForecastDisplay from "../ForecastDisplay/ForecastDisplay";
+import { useNavigate } from "react-router-dom";
+
+// TODO: Add session API endpoint - submit session
+// allow image upload for session
 
 export default function AddSession() {
   const [spotName, setSpotName] = useState("");
@@ -10,6 +14,9 @@ export default function AddSession() {
   const [forecast, setForecast] = useState<Forecast | null>();
   const [boards, setBoards] = useState<Board[] | null>();
   const [shareInFeed, setShareInFeed] = useState(false);
+  const [sessionAddedConfirmation, setSessionAddedConfirmation] =
+    useState(false);
+  const navigate = useNavigate();
 
   // No need for boards if there is no forecast
   useEffect(() => {
@@ -43,9 +50,41 @@ export default function AddSession() {
     }
   };
 
-  const handlerSaveSession = async (e: React.FormEvent) => {
+  const handlerSaveSession = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Session Saved");
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const sessionMatchForecast = formData.get("sessionMatchForecasts");
+    const description = formData.get("sessionNotes");
+    const boardId = formData.get("chooseBoard");
+
+    try {
+      await apiClient("/session/user", {
+        method: "POST",
+        body: JSON.stringify({
+          spotName,
+          startTimeSession,
+          forecast,
+          shareInFeed,
+          sessionMatchForecast,
+          description,
+          boardId,
+        }),
+      });
+      showConfirmation();
+    } catch (err) {
+      console.error("Error adding session: ", err);
+    }
+  };
+
+  const showConfirmation = () => {
+    setSessionAddedConfirmation(true);
+
+    setTimeout(() => {
+      setSessionAddedConfirmation(false);
+      navigate("/my-sessions");
+    }, 1500);
   };
 
   const resetForm = () => {
@@ -54,6 +93,15 @@ export default function AddSession() {
     setStartTimeSession("");
     setShareInFeed(false);
   };
+
+  if (sessionAddedConfirmation) {
+    return (
+      <div className={style.sessionAdded}>
+        <p>🤙</p>
+        <p>Session added successfully!</p>
+      </div>
+    );
+  }
 
   if (!forecast) {
     return (
@@ -139,12 +187,12 @@ export default function AddSession() {
 
           <div className={style.sessionDetails}>
             <div className={style.inputGroup}>
-              <label htmlFor="sessionMatchForecasts" className={style.label}>
+              <label htmlFor="sessionMatchForecast" className={style.label}>
                 Did the waves match the forecast?
               </label>
               <textarea
-                name="sessionMatchForecasts"
-                id="sessionMatchForecasts"
+                name="sessionMatchForecast"
+                id="sessionMatchForecast"
                 placeholder="e.g. Waves were 2ft bigger than forecast, more consistent than expected..."
                 className={style.textarea}
                 rows={3}
@@ -152,12 +200,12 @@ export default function AddSession() {
             </div>
 
             <div className={style.inputGroup}>
-              <label htmlFor="sessionDescription" className={style.label}>
+              <label htmlFor="sessionNotes" className={style.label}>
                 Session Notes
               </label>
               <textarea
-                name="sessionDescription"
-                id="sessionDescription"
+                name="sessionNotes"
+                id="sessionNotes"
                 placeholder="Left was really fun. The Right a bit soft. Tried some cutbacks. Need to learn how to properly use my arms."
                 className={style.textarea}
                 rows={4}

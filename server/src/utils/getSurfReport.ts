@@ -77,11 +77,11 @@ function calculateEnhancedRating(
     else if (primarySwell.period < 8) rating -= 0.5; // Poor windswell
   }
 
-  // Adjust based on swell consistency (multiple swells = better)
+  // Adjust based on swell consistency (multiple swells = worse)
   const activeSwells =
     waveMatch.swells?.filter((s: any) => s.height > 0.1).length || 0;
-  if (activeSwells >= 2) rating += 0.25;
-  if (activeSwells >= 3) rating += 0.25;
+  if (activeSwells >= 2) rating -= 0.25;
+  if (activeSwells >= 3) rating -= 0.25;
 
   // Adjust based on wind conditions
   if (windMatch) {
@@ -103,16 +103,13 @@ function calculateEnhancedRating(
   // Adjust based on tide
   if (tideMatch?.type) {
     const tideType = tideMatch.type.toLowerCase();
-    // Some general adjustments (you can make these spot-specific later)
+    // Some general adjustments
     if (tideType.includes("low") && avgWaveHeight > 2) rating -= 0.25;
     if (tideType.includes("high") && avgWaveHeight < 1) rating += 0.25;
   }
 
   // Spot-specific adjustments based on known characteristics
-  const spotAdjustment = getSpotSpecificAdjustment(
-    spotName,
-    avgWaveHeight,
-  );
+  const spotAdjustment = getSpotSpecificAdjustment(spotName, avgWaveHeight);
   rating += spotAdjustment;
 
   // Ensure rating stays within 1-5 range and round to nearest 0.5
@@ -144,7 +141,7 @@ function calculateBaseRatingFromWaveHeight(waveHeight: number): number {
  */
 function getSpotSpecificAdjustment(
   spotName: string,
-  waveHeight: number,
+  waveHeight: number
 ): number {
   const normalizedName = spotName.toLowerCase();
 
