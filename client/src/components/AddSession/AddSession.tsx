@@ -78,7 +78,7 @@ export default function AddSession() {
           forecast,
           shareInFeed,
           ...formValues,
-          image: imageUrl,
+          sessionImageUrl: imageUrl,
         }),
       });
 
