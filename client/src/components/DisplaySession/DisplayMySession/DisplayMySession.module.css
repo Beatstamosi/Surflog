@@ -254,7 +254,7 @@
 
 .forecastHeaderContent {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
   flex: 1;
 }
@@ -426,6 +426,38 @@
   font-weight: 300;
   color: var(--text-primary);
   letter-spacing: -0.01em;
+}
+
+.ratingBadge {
+  padding: 0.275rem 0.55rem;
+  border-radius: 9999px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ratingPoor {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+}
+
+.ratingFair {
+  background-color: var(--color-yellow);
+  color: var(--color-white);
+}
+
+.ratingGood {
+  background-color: var(--color-success);
+  color: var(--color-white);
+}
+
+.ratingExcellent {
+  background-color: var(--color-epic);
+  color: var(--color-white);
 }
 
 /* Desktop Width Control */

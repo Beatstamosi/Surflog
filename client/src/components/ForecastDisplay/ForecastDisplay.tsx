@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { ForecastReport } from "../types/models";
+import getRatingClass from "../../utils/getRatingClass";
 import style from "./ForecastDisplay.module.css";
 
 interface ForecastDisplayProps {
@@ -15,34 +16,7 @@ export default function ForecastDisplay({ forecast }: ForecastDisplayProps) {
       (swell) => parseFloat(swell.height?.split(":")[1] || "0") > 0
     ) || [];
 
-  // Use official Surfline rating
-  const getRatingClass = (ratingValue: number) => {
-    // Round to nearest 0.5 to handle float values
-    const roundedRating = Math.round(ratingValue * 2) / 2;
-
-    switch (roundedRating) {
-      case 0.5:
-      case 1:
-        return style.ratingPoor;
-      case 1.5:
-      case 2:
-      case 2.5:
-      case 3:
-        return style.ratingFair;
-      case 3.5:
-      case 4:
-      case 4.5:
-      case 5:
-        return style.ratingGood;
-      default:
-        // Handle out-of-bounds values
-        if (ratingValue < 1) return style.ratingPoor;
-        if (ratingValue > 5) return style.ratingExcellent;
-        return style.ratingPoor;
-    }
-  };
-
-  const ratingClass = getRatingClass(forecast.rating?.value || 1);
+  const ratingClass = style[getRatingClass(forecast.rating?.value || 1)];
 
   return (
     <div className={style.forecastContainer}>

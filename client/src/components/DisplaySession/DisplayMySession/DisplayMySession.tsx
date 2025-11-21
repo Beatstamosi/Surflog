@@ -8,6 +8,7 @@ import { FaChevronDown } from "react-icons/fa";
 import surfBoardSessionSVG from "../../../assets/surfboard_session.svg";
 import radarSVG from "../../../assets/radar.svg";
 import EditSession from "../../EditSession/EditSession";
+import getRatingClass from "../../../utils/getRatingClass";
 
 interface DisplaySessionProps {
   session: Session;
@@ -26,6 +27,7 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const forecast = session.forecast;
   const board = session.board;
+  const ratingClass = style[getRatingClass(session.forecast?.ratingValue || 1)];
 
   // Format date for display
   const formatDate = (dateString: string) => {
@@ -51,7 +53,7 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
     const waveHeight = getWaveHeight(forecast.size);
     const wind = `${forecast.windSpeed} ${forecast.windDirection}`;
 
-    return `${waveHeight}m • ${wind} • ${forecast.ratingDescription}`;
+    return `${waveHeight}m • ${wind}`;
   };
 
   // Close menu when clicking outside
@@ -155,6 +157,9 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
                 <span className={style.forecastSummary}>
                   {getForecastSummary()}
                 </span>
+                <div className={`${style.ratingBadge} ${ratingClass}`}>
+                  {forecast.ratingDescription || "UNKNOWN"}
+                </div>
               </div>
               <FaChevronDown
                 className={`${style.accordionIcon} ${
@@ -165,6 +170,12 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
 
             {isForecastOpen && (
               <div className={style.forecastContent}>
+                {forecast.ratingDescription && (
+                  <div className={`${style.ratingBadge} ${ratingClass}`}>
+                    {forecast.ratingDescription || "UNKNOWN"}
+                  </div>
+                )}
+
                 <div className={style.forecastGrid}>
                   <div className={style.forecastItem}>
                     <span className={style.forecastLabel}>Wave Height</span>
@@ -212,6 +223,7 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
                     ))}
                   </div>
                 )}
+
                 <h4 className={style.forecastMatchTitle}>
                   Did Waves match Forecast?
                 </h4>
