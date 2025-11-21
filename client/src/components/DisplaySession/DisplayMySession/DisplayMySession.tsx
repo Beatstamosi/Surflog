@@ -13,7 +13,6 @@ interface DisplaySessionProps {
 }
 
 // TODO:
-
 // on Sidebar menu click load ScrollToTop
 // after adding board to quiver ScrollToTop
 
