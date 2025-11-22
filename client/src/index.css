@@ -12,10 +12,9 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* Brand Core */
-  --color-navy: #090974; /* Primary logo color */
-  --color-blue: #336699; /* Background / secondary brand blue */
+  --color-navy: #000000; /* Primary logo color */
   --color-sky: #5fa8d3; /* Light accent blue */
-  --color-orange: #ff9900; /* Call-to-action / highlight */
+  --color-blue: #0077E6; /* Call-to-action / highlight */
   --color-yellow: #ffd166; /* Secondary warm accent */
 
   /* Neutrals */
@@ -24,6 +23,7 @@
   --color-lightgray: #e0e3e7;
   --color-gray: #9ea7b3;
   --color-darkgray: #4a4a4a;
+  --color-black: #000;
 
   /* UI tones */
   --color-epic: #c209c8; 
@@ -33,14 +33,15 @@
   --color-info: #3498db; /* For informational tags */
 
   /* Text */
-  --text-primary: var(--color-navy);
+  --text-primary: var(--color-black);
   --text-secondary: var(--color-gray);
   --text-invert: var(--color-white);
 
   /* Backgrounds */
   --bg-primary: var(--color-white);
   --bg-secondary: var(--color-offwhite);
-  --bg-accent: var(--color-blue);
+  --bg-accent: var(--color-orange);
+  --bg-black: var(--color-black);
 
   /* Borders and shadows */
   --border-color: rgba(0, 0, 0, 0.1);

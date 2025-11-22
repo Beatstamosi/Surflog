@@ -417,8 +417,7 @@
 
 .iconFilter {
   width: 24px;
-  filter: invert(52%) sepia(72%) saturate(771%) hue-rotate(1deg)
-    brightness(105%) contrast(102%);
+  filter: invert(29%) sepia(71%) saturate(4381%) hue-rotate(196deg) brightness(100%) contrast(101%);
 }
 
 .boardDetails {

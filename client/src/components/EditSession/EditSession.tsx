@@ -112,12 +112,13 @@ export default function EditSession({
     <>
       <div className={style.header}>
         <h2 className={style.title}>Edit Your Session</h2>
+
       </div>
 
       <form onSubmit={handlerSaveSession} className={style.formAddSession}>
         <ForecastDisplay
           forecast={transformForecastToReport(session.forecast!)}
-          addHeader={false}
+          addHeader={true}
         />
 
         <div className={style.sessionDetails}>

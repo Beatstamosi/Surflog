@@ -5,7 +5,7 @@ import { MdOutlineSurfing } from "react-icons/md";
 import { GiSurferVan } from "react-icons/gi";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { FaUserEdit } from "react-icons/fa";
-import surfLogLogo from "../../assets/surflog_logo.png";
+import surfLogLogo from "../../assets/surflog_logo_bw.png";
 import LogOutBtn from "../Authentication/LogOut/LogOutBtn";
 
 export default function Sidebar() {

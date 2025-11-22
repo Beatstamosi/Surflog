@@ -28,7 +28,7 @@
   transition: all 0.2s ease-out;
 }
 .sidebarLink:hover {
-  color: var(--color-orange);
+  color: var(--color-blue);
   text-decoration: none;
   transform: scale(1.05);
 }
@@ -42,5 +42,5 @@
 }
 
 .active {
-  color: var(--color-orange);
+  color: var(--color-blue);
 }

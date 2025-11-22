@@ -21,7 +21,6 @@ interface DisplaySessionProps {
 }
 
 // TODO:
-// delete functionality
 // share functionality
 
 export default function DisplayMySession({

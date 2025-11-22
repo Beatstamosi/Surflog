@@ -220,7 +220,7 @@
 }
 
 .primaryButton {
-  background: var(--color-orange);
+  background: var(--color-black);
   color: var(--color-white);
   border: none;
   padding: 0.875rem 2rem;
@@ -235,6 +235,7 @@
 .primaryButton:hover:not(:disabled), .cancelButton:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-medium);
+  background: var(--color-blue);
 }
 
 .primaryButton:disabled {
