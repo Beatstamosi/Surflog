@@ -72,6 +72,9 @@ const getAllUserSessions = async (req: Request, res: Response) => {
         },
         board: true,
       },
+      orderBy: {
+        startTime: "desc",
+      },
     });
 
     res.status(201).json({ sessions });
