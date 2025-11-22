@@ -494,6 +494,14 @@
   .sessionContent {
     padding: 0 1rem 1rem;
   }
+
+  .forecastSummary {
+    font-size: 0.9rem;
+  }
+
+  .forecastHeaderContent {
+  gap: 0.01rem;
+}
 }
 
 @media (max-width: 480px) {
