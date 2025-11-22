@@ -1,6 +1,6 @@
 .header {
   text-align: center;
-  padding-bottom: 1.5rem;
+  padding: 0.25rem;
   border-bottom: 2px solid var(--color-lightgray);
 }
 
@@ -214,16 +214,13 @@
 .buttonGroup {
   display: flex;
   justify-content: center;
+  gap: 2rem;
   margin-top: 1rem;
   width: 100%;
 }
 
 .primaryButton {
-  background: linear-gradient(
-    135deg,
-    var(--color-blue) 0%,
-    var(--color-sky) 100%
-  );
+  background: var(--color-orange);
   color: var(--color-white);
   border: none;
   padding: 0.875rem 2rem;
@@ -235,7 +232,7 @@
   min-width: 140px;
 }
 
-.primaryButton:hover:not(:disabled) {
+.primaryButton:hover:not(:disabled), .cancelButton:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-medium);
 }
@@ -246,6 +243,19 @@
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+
+.cancelButton {
+  background: var(--color-gray);
+  color: var(--color-white);
+  border: none;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 140px;
 }
 
 .sessionAdded {
@@ -314,7 +324,7 @@
   }
 
   .inputGroup {
-    width: 100%;
+    width: 70%;
   }
 
   .sessionAdded {

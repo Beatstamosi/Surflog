@@ -3,18 +3,27 @@ import type { Board, Session } from "../types/models";
 import { apiClient } from "../../utils/apiClient";
 import style from "./EditSession.module.css";
 import ForecastDisplay from "../ForecastDisplay/ForecastDisplay";
-import { useNavigate } from "react-router-dom";
 import uploadImageToSupaBase from "../../utils/uploadImageToSupaBase";
 import { useAuth } from "../Authentication/useAuth";
 import { transformForecastToReport } from "../../utils/transformForecastToReport";
 
-export default function EditSession({ session }: { session: Session }) {
+// TODO
+// Update API
+// Update Session setEdit false
+// scrolling issue when clicking cancel or saving or edit
+
+export default function EditSession({
+  session,
+  setEditSession,
+}: {
+  session: Session;
+  setEditSession: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [boards, setBoards] = useState<Board[] | null>();
   const [shareInFeed, setShareInFeed] = useState(session.shared);
   const [sessionUpdatedConfirmation, setsessionUpdatedConfirmation] =
     useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const navigate = useNavigate();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -70,7 +79,7 @@ export default function EditSession({ session }: { session: Session }) {
 
     setTimeout(() => {
       setsessionUpdatedConfirmation(false);
-      navigate("/my-sessions");
+      setEditSession(false);
     }, 1500);
   };
 
@@ -93,10 +102,7 @@ export default function EditSession({ session }: { session: Session }) {
   return (
     <>
       <div className={style.header}>
-        <h1 className={style.title}>Edit Your Session</h1>
-        <p className={style.subtitle}>
-          {session?.forecast?.spotName} • {session?.forecast?.region}
-        </p>
+        <h2 className={style.title}>Edit Your Session</h2>
       </div>
 
       <form onSubmit={handlerSaveSession} className={style.formAddSession}>
@@ -115,6 +121,7 @@ export default function EditSession({ session }: { session: Session }) {
               placeholder="e.g. Waves were 2ft bigger than forecast, more consistent than expected..."
               className={style.textarea}
               rows={3}
+              defaultValue={session.sessionMatchForecast!}
             />
           </div>
 
@@ -128,6 +135,7 @@ export default function EditSession({ session }: { session: Session }) {
               placeholder="Left was really fun. The Right a bit soft. Tried some cutbacks. Need to learn how to properly use my arms."
               className={style.textarea}
               rows={4}
+              defaultValue={session.description!}
             />
           </div>
 
@@ -135,18 +143,23 @@ export default function EditSession({ session }: { session: Session }) {
             <label htmlFor="chooseBoard" className={style.label}>
               Which board did you surf?
             </label>
-            <select
-              name="chooseBoard"
-              id="chooseBoard"
-              className={style.select}
-            >
-              <option value="">-- Select board from your quiver --</option>
-              {boards?.map((b) => (
-                <option value={b.id} key={b.id}>
-                  {b.brand} - {b.name} - {b.size} - {b.volume}L
-                </option>
-              ))}
-            </select>
+            {!boards ? (
+              <div>Loading boards...</div>
+            ) : (
+              <select
+                name="chooseBoard"
+                id="chooseBoard"
+                className={style.select}
+                defaultValue={session.boardId!}
+              >
+                <option value="">-- Select board from your quiver --</option>
+                {boards.map((b) => (
+                  <option value={b.id} key={b.id}>
+                    {b.brand} - {b.name} - {b.size} - {b.volume}L
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           <div className={style.inputGroup}>
@@ -198,6 +211,15 @@ export default function EditSession({ session }: { session: Session }) {
           <div className={style.buttonGroup}>
             <button type="submit" className={style.primaryButton}>
               Update Session
+            </button>
+            <button
+              className={style.cancelButton}
+              onClick={(e) => {
+                e.preventDefault();
+                setEditSession(false);
+              }}
+            >
+              Cancel
             </button>
           </div>
         </div>

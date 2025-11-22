@@ -14,8 +14,6 @@ export default function ForecastDisplay({ forecast }: ForecastDisplayProps) {
     return size?.replace("Surf: ", "") || "N/A";
   };
 
-  console.log(forecast);
-
   return (
     <div className={style.forecastContainer}>
       {/* Main Header with Rating */}

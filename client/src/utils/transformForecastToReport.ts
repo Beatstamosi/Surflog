@@ -17,8 +17,8 @@ export function transformForecastToReport(
     description: apiForecast.description || "",
     waveEnergy: apiForecast.waveEnergy || "",
     rating: {
-      value: 0, // You'll need to calculate or get this from somewhere
-      description: "", // You'll need to calculate or get this from somewhere
+      value: apiForecast.ratingValue || 0,
+      description: apiForecast.ratingDescription || "",
     },
     swells: apiForecast.swells || [],
     wind:
