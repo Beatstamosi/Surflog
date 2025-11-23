@@ -182,7 +182,7 @@ export default function AddSession() {
           <div className={style.buttonGroup}>
             <button
               onClick={handlerGetForecast}
-              disabled={!spotName || !startTimeSession}
+              disabled={!spotName || !startTimeSession || !endTimeSession}
               className={style.primaryButton}
             >
               Get Forecast

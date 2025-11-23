@@ -10,9 +10,10 @@ const getForeCast = async (req: Request, res: Response) => {
     if (!spotName || !startTimeSession)
       throw Error("Missing Spot or start time.");
 
-    const sessionStart = createSessionDateString(startTimeSession as string);
+    const sessionDate = new Date(startTimeSession as string);
+    const sessionStart = createSessionDateString(sessionDate);
 
-    const report = await getSurfReport(sessionStart, spotName as string);
+    const report = await getSurfReport(sessionStart!, spotName as string);
 
     res.status(201).json({ report });
   } catch (err) {

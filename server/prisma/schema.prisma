@@ -100,6 +100,8 @@ model Swell {
 model Session {
   id                   Int      @id @default(autoincrement())
   startTime            DateTime
+  endTime              DateTime
+  rating               Rating
   description          String
   sessionMatchForecast String
   image                String?
@@ -186,4 +188,13 @@ model UserFollowing {
   @@unique([userId, followingUserId])
   @@index([userId])
   @@index([followingUserId])
+}
+
+enum Rating {
+  ZERO
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
 }

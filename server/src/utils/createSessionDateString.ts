@@ -1,14 +1,19 @@
-export default function createSessionDateString(time24h: string) {
-  // 1. Get today's date components based on the user's local time
-  const today = new Date();
+export default function createSessionDateString(startTimeSession: Date) {
+  if (!startTimeSession) {
+    return null;
+  }
+
+  // Format the date from the TimePicker
   const pad = (num: number) => String(num).padStart(2, "0");
 
-  const year = today.getFullYear();
-  const month = pad(today.getMonth() + 1); // getMonth() is 0-indexed
-  const day = pad(today.getDate());
+  const year = startTimeSession.getFullYear();
+  const month = pad(startTimeSession.getMonth() + 1);
+  const day = pad(startTimeSession.getDate());
+  const hours = pad(startTimeSession.getHours());
+  const minutes = pad(startTimeSession.getMinutes());
 
-  // 2. Construct the final string in the required format
-  const sessionStartString = `${year}-${month}-${day} ${time24h}`;
+  // Construct the final string: "YYYY-MM-DD HH:MM"
+  const sessionStartString = `${year}-${month}-${day} ${hours}:${minutes}`;
 
   return sessionStartString;
 }
