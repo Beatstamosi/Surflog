@@ -9,12 +9,9 @@ import { transformForecastToReport } from "../../utils/transformForecastToReport
 import { getRatingNumber, handleRatingClick } from "../../utils/ratingHelpers";
 
 // TODO
-// Update API to toggle share session on / off
-// --> toggle on create post
-// --> toggle off delete post
-// Update Session setEdit false
 // scrolling issue when clicking cancel or saving or edit
 // implement error handler same as addSession
+// after saving post with different shared status sessions or posts need to be refetched depending on shared status
 
 export default function EditSession({
   session,

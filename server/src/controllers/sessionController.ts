@@ -68,6 +68,7 @@ const getAllUserSessions = async (req: Request, res: Response) => {
     const sessions = await prisma.session.findMany({
       where: {
         userId: userId,
+        shared: false,
       },
       include: {
         forecast: {
@@ -137,10 +138,10 @@ const updateSession = async (req: Request, res: Response) => {
             sessionId: session.id,
           },
         });
-      } else if (!shareInFeed && session.post) {
+      } else {
         await tx.post.delete({
           where: {
-            id: session.post.id,
+            id: session.post?.id,
           },
         });
       }
@@ -177,7 +178,7 @@ const toggleSharedStatus = async (req: Request, res: Response) => {
   const user = req.user;
 
   try {
-    if (!user || !sessionId || !shared)
+    if (!user || !sessionId || shared === undefined || shared === null)
       throw new Error("Missing info to toggle shared status.");
 
     // Use transaction to ensure data consistency
@@ -209,10 +210,10 @@ const toggleSharedStatus = async (req: Request, res: Response) => {
             sessionId: session.id,
           },
         });
-      } else if (!shared && session.post) {
+      } else {
         await tx.post.delete({
           where: {
-            id: session.post.id,
+            id: session.post?.id,
           },
         });
       }

@@ -153,6 +153,26 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
+
+  .forecastLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.forecastValue {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.swellName {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.swellDetails {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
 }
 
 @media (max-width: 480px) {

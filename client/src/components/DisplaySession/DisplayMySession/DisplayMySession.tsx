@@ -23,9 +23,6 @@ interface DisplaySessionProps {
   onSessionDelete: (sessionToDelete: Session) => void;
 }
 
-// TODO:
-// share functionality
-
 export default function DisplayMySession({
   session,
   onSessionUpdate,
