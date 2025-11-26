@@ -103,6 +103,7 @@ export interface Session {
   userId: number;
   forecastId?: number | null;
   boardId?: number | null;
+  postId?: number | null;
   user?: User;
   forecast?: ForecastFromAPI;
   board?: Board;

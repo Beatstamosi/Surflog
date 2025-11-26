@@ -10,10 +10,9 @@ export default function createSessionDateString(startTimeSession: Date) {
   const month = pad(startTimeSession.getMonth() + 1);
   const day = pad(startTimeSession.getDate());
   const hours = pad(startTimeSession.getHours());
-  const minutes = pad(startTimeSession.getMinutes());
 
   // Construct the final string: "YYYY-MM-DD HH:MM"
-  const sessionStartString = `${year}-${month}-${day} ${hours}:${minutes}`;
+  const sessionStartString = `${year}-${month}-${day} ${hours}:00`;
 
   return sessionStartString;
 }

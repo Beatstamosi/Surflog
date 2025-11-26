@@ -4,6 +4,7 @@ import {
   addSession,
   deleteSession,
   getAllUserSessions,
+  toggleSharedStatus,
   updateSession,
 } from "../controllers/sessionController.js";
 
@@ -15,5 +16,6 @@ sessionRouter.post("/", addSession);
 sessionRouter.put("/", updateSession);
 sessionRouter.delete("/", deleteSession);
 sessionRouter.get("/user/all", getAllUserSessions);
+sessionRouter.put("/shared", toggleSharedStatus);
 
 export default sessionRouter;

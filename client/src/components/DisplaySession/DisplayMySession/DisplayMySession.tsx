@@ -117,6 +117,21 @@ export default function DisplayMySession({
     }
   };
 
+  const handleToggleShared = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setIsShared(e.target.checked);
+
+    try {
+      const response = await apiClient("/sessions/shared", {
+        method: "PUT",
+        body: JSON.stringify({ sessionId: session.id, shared: session.shared }),
+      });
+      onSessionUpdate(response.updatedSession);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className={style.sessionContainer}>
       {editSession ? (
@@ -146,7 +161,7 @@ export default function DisplayMySession({
                       <input
                         type="checkbox"
                         checked={isShared}
-                        onChange={(e) => setIsShared(e.target.checked)}
+                        onChange={handleToggleShared}
                         className={style.toggleInput}
                       />
                       <span className={style.toggleSlider}></span>

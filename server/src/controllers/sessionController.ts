@@ -125,6 +125,7 @@ const updateSession = async (req: Request, res: Response) => {
             },
           },
           board: true,
+          post: true,
         },
       });
 
@@ -134,6 +135,12 @@ const updateSession = async (req: Request, res: Response) => {
           data: {
             creatorId: user.id,
             sessionId: session.id,
+          },
+        });
+      } else if (!shareInFeed && session.post) {
+        await tx.post.delete({
+          where: {
+            id: session.post.id,
           },
         });
       }
@@ -164,4 +171,64 @@ const deleteSession = async (req: Request, res: Response) => {
   }
 };
 
-export { addSession, getAllUserSessions, updateSession, deleteSession };
+const toggleSharedStatus = async (req: Request, res: Response) => {
+  // get session
+  const { sessionId, shared } = req.body;
+  const user = req.user;
+
+  try {
+    if (!user || !sessionId || !shared)
+      throw new Error("Missing info to toggle shared status.");
+
+    // Use transaction to ensure data consistency
+    const updatedSession = await prisma.$transaction(async (tx) => {
+      // 1. Update session
+      const session = await tx.session.update({
+        where: {
+          id: sessionId,
+        },
+        data: {
+          shared: !shared,
+        },
+        include: {
+          forecast: {
+            include: {
+              swells: true,
+            },
+          },
+          board: true,
+          post: true,
+        },
+      });
+
+      // 2. Create post if shared or delete if unshared
+      if (session.shared) {
+        await tx.post.create({
+          data: {
+            creatorId: user.id,
+            sessionId: session.id,
+          },
+        });
+      } else if (!shared && session.post) {
+        await tx.post.delete({
+          where: {
+            id: session.post.id,
+          },
+        });
+      }
+
+      return session;
+    });
+    res.status(201).json({ updatedSession });
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+export {
+  addSession,
+  getAllUserSessions,
+  updateSession,
+  deleteSession,
+  toggleSharedStatus,
+};
