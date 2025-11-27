@@ -95,7 +95,6 @@
   color: var(--color-blue);
 }
 
-
 @keyframes likeAnimation {
   0% {
     transform: scale(1);
@@ -111,9 +110,11 @@
 /* Comments Section */
 .commentsSection {
   margin-top: 0.5rem;
+  padding: 0rem 1rem;
 }
 
-.commentsCount, .likesCount {
+.commentsCount,
+.likesCount {
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--color-blue);
@@ -180,27 +181,65 @@
 }
 
 /* Add Comment Form */
-.addCommentForm {
-  display: flex;
-  align-items: center;
+.inputContainer {
   width: 100%;
-  padding: 0;
-  margin: 0;
   border: none;
+  border-radius: 5px;
   background: transparent;
+  max-width: calc(100% - 0.75rem);
+}
+
+.inputContainer form {
+  all: unset;
+  display: flex !important;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
+/* COMPLETE FORM RESET */
+.inputContainer form:focus,
+.inputContainer form:active,
+.inputContainer form:hover {
+  all: unset;
+  display: flex !important;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .commentInput {
-  flex: 1;
-  border: none;
   background: transparent;
-  font-size: 14px;
-  color: var(--text-primary);
-  padding: 0;
-  margin: 0;
   outline: none;
-  height: 18px;
-  font-family: inherit;
+  min-width: 90%;
+  box-shadow: none;
+  border: none !important;
+  /* Prevent any size changes */
+  font-size: inherit;
+  line-height: inherit;
+  /* Explicitly remove transitions */
+  transition: none !important;
+}
+
+.commentInput:focus,
+.commentInput:active,
+.commentInput:focus-visible,
+.commentInput:focus-within {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  /* Prevent any size/layout changes */
+  transform: none !important;
+  width: auto !important;
+  height: auto !important;
+  font-size: inherit !important;
+  /* Remove any browser-specific focus styles */
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
 }
 
 .commentInput::placeholder {
@@ -208,32 +247,26 @@
 }
 
 .postCommentButton {
+  background: none;
   border: none;
-  background: transparent;
   color: var(--color-blue);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 2rem;
   cursor: pointer;
   padding: 0;
-  margin: 0;
-  margin-left: 8px;
-  opacity: 1;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
 }
 
-.postCommentButton:disabled {
-  color: var(--color-lightgray);
-  cursor: default;
-  opacity: 0.5;
+.postCommentButton:hover {
+  color: var(--text-primary);
+  transform: scale(1.1);
 }
 
-.addCommentForm {
-  border: 1px solid red; /* Debug border */
-}
-.commentInput {
-  border: 1px solid blue; /* Debug border */
-}
-.postCommentButton {
-  border: 1px solid green; /* Debug border */
+/* Ensure the icon is properly sized */
+.postCommentButton svg {
+  width: 18px;
+  height: 18px;
 }
 
 /* Desktop */
@@ -263,6 +296,10 @@
   .commentsSection {
     padding: 0.5rem 1rem;
   }
+
+  .inputContainer {
+  max-width: calc(100% - 1.5rem);
+}
 }
 
 @media (max-width: 480px) {

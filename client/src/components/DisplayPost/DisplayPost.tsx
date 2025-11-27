@@ -9,6 +9,7 @@ import {
   FaShare,
   FaRegComment,
 } from "react-icons/fa";
+import { IoSend } from "react-icons/io5";
 import { apiClient } from "../../utils/apiClient";
 import { useAuth } from "../Authentication/useAuth";
 import DisplayMySession from "../DisplaySession/DisplayMySession/DisplayMySession";
@@ -185,8 +186,6 @@ export default function DisplayPost({
           <button className={style.actionButton} onClick={handleShare}>
             <FaShare />
           </button>
-        </div>
-        <div className={style.rightActions}>
           <button
             className={`${style.actionButton} ${isSaved ? style.saved : ""}`}
             onClick={handleSave}
@@ -224,23 +223,28 @@ export default function DisplayPost({
         )}
       </div>
 
+      {/* // TODO: handleSubmitComment author missing */}
+
       {/* Add Comment Form */}
-      <form className={style.addCommentForm} onSubmit={handleSubmitComment}>
-        <input
-          type="text"
-          placeholder="Add a comment..."
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-          className={style.commentInput}
-        />
-        <button
-          type="submit"
-          className={style.postCommentButton}
-          disabled={!commentText.trim()}
-        >
-          Post
-        </button>
-      </form>
+      <div className={style.inputContainer}>
+        <form onSubmit={handleSubmitComment}>
+          <input
+            type="text"
+            placeholder="Add a comment..."
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            className={style.commentInput}
+          />
+          <button
+            type="submit"
+            className={style.postCommentButton}
+            disabled={!commentText.trim()}
+            onClick={handleSubmitComment}
+          >
+            <IoSend />
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
