@@ -123,4 +123,35 @@ const savePost = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllUserPosts, unlikePost, likePost, unsavePost, savePost };
+const addComment = async (req: Request, res: Response) => {
+  const { postId } = req.params;
+  const user = req.user;
+  const { content } = req.body;
+
+  try {
+    if (!user) throw new Error("Missing user Id");
+    if (!postId) throw new Error("Missing postId.");
+    if (!content) throw new Error("Missing content.");
+
+    await prisma.comment.create({
+      data: {
+        postId: parseInt(postId),
+        authorId: user.id,
+        content,
+      },
+    });
+
+    res.sendStatus(201);
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+export {
+  getAllUserPosts,
+  unlikePost,
+  likePost,
+  unsavePost,
+  savePost,
+  addComment,
+};

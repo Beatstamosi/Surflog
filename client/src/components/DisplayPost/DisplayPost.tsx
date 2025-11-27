@@ -169,12 +169,18 @@ export default function DisplayPost({
             onClick={handleLike}
           >
             {isLiked ? <FaHeart /> : <FaRegHeart />}
+            {likesCount > 0 && (
+              <span className={style.likesCount}>({likesCount})</span>
+            )}
           </button>
           <button
             className={style.actionButton}
             onClick={() => setIsCommentsOpen(!isCommentsOpen)}
           >
             <FaRegComment />
+            <span className={style.commentsCount}>
+              {comments.length > 0 ? `(${comments.length})` : ""}
+            </span>
           </button>
           <button className={style.actionButton} onClick={handleShare}>
             <FaShare />
@@ -190,25 +196,8 @@ export default function DisplayPost({
         </div>
       </div>
 
-      {/* Likes Count */}
-      {likesCount > 0 && (
-        <div className={style.likesCount}>
-          {likesCount} {likesCount === 1 ? "like" : "likes"}
-        </div>
-      )}
-
       {/* Comments Section */}
-      {/* <div className={style.commentsSection}>
-        {comments.length > 0 && (
-          <button
-            className={style.viewCommentsButton}
-            onClick={() => setIsCommentsOpen(!isCommentsOpen)}
-          >
-            View all {comments.length} comment
-            {comments.length !== 1 ? "s" : ""}
-          </button>
-        )}
-
+      <div className={style.commentsSection}>
         {isCommentsOpen && (
           <div className={style.commentsList}>
             {comments.map((comment) => (
@@ -233,7 +222,8 @@ export default function DisplayPost({
             ))}
           </div>
         )}
-      </div> */}
+      </div>
+
       {/* Add Comment Form */}
       <form className={style.addCommentForm} onSubmit={handleSubmitComment}>
         <input

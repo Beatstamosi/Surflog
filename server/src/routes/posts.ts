@@ -6,6 +6,7 @@ import {
   unlikePost,
   unsavePost,
   savePost,
+  addComment,
 } from "../controllers/postsController.js";
 
 const postsRouter = Router();
@@ -17,5 +18,6 @@ postsRouter.delete("/:postId/unlike", unlikePost);
 postsRouter.post("/:postId/like", likePost);
 postsRouter.delete("/:postId/unsave", unsavePost);
 postsRouter.post("/:postId/save", savePost);
+postsRouter.post("/:postId/comments", addComment);
 
 export default postsRouter;
