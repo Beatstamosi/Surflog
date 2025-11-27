@@ -88,7 +88,7 @@
 }
 
 .actionButton.saved {
-  color: var(--text-primary);
+  color: var(--color-blue);
 }
 
 @keyframes likeAnimation {
@@ -108,7 +108,7 @@
   padding: 0 1.25rem 0.5rem;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--color-blue);
 }
 
 /* Comments Section */
