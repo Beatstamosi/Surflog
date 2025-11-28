@@ -8,6 +8,7 @@ import MySessions from "./ MySessions/MySessions.js";
 import AddSession from "./AddSession/AddSession.js";
 import MyQuiver from "./MyQuiver/MyQuiver.js";
 import MyProfile from "./MyProfile/MyProfile.js";
+import ViewPublicProfile from "./ViewPublicProfile/ViewPublicProfile.js";
 
 const routes = [
   {
@@ -38,6 +39,10 @@ const routes = [
       {
         path: "/edit-profile",
         element: <MyProfile />,
+      },
+      {
+        path: "/user/:profileId",
+        element: <ViewPublicProfile />,
       },
     ],
   },

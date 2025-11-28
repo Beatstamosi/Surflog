@@ -13,6 +13,7 @@ import { IoSend } from "react-icons/io5";
 import { apiClient } from "../../utils/apiClient";
 import { useAuth } from "../Authentication/useAuth";
 import DisplayMySession from "../DisplaySession/DisplayMySession/DisplayMySession";
+import { Link } from "react-router-dom";
 
 interface DisplayPostProps {
   post: Post;
@@ -138,20 +139,26 @@ export default function DisplayPost({
   return (
     <div className={style.postContainer}>
       {/* Post Header with Creator Info */}
+
       <div className={style.postHeader}>
-        <div className={style.creatorInfo}>
-          <img
-            src={creator?.profilePicture}
-            alt={`${creator?.firstName} ${creator?.lastName}`}
-            className={style.avatar}
-          />
-          <div className={style.creatorDetails}>
-            <span className={style.creatorName}>
-              {creator?.firstName} {creator?.lastName}
-            </span>
-            <span className={style.postTime}>{formatTimeAgo(post.posted)}</span>
+        <Link to={`/user/${user?.id}`}>
+          <div className={style.creatorInfo}>
+            <img
+              src={creator?.profilePicture}
+              alt={`${creator?.firstName} ${creator?.lastName}`}
+              className={style.avatar}
+            />
+
+            <div className={style.creatorDetails}>
+              <span className={style.creatorName}>
+                {creator?.firstName} {creator?.lastName}
+              </span>
+              <span className={style.postTime}>
+                {formatTimeAgo(post.posted)}
+              </span>
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
 
       <div>

@@ -189,10 +189,10 @@ a {
 }
 
 a:hover {
-  color: var(--color-orange);
+  color: var(--color-blue);
 }
 
-a::after {
+/* a::after {
   content: "";
   position: absolute;
   width: 100%;
@@ -208,7 +208,7 @@ a::after {
 a:hover::after {
   transform: scaleX(1);
   transform-origin: bottom left;
-}
+} */
 
 p {
   text-align: center;
@@ -220,10 +220,6 @@ p {
 a {
   color: var(--color-orange);
   text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
 }
 
 /* Responsive tweaks */
