@@ -1,0 +1,127 @@
+.container {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 1em;
+  flex-wrap: wrap;
+  padding-left: 2em;
+}
+
+.searchWrapper {
+  margin-bottom: 0;
+  flex: 1;
+  min-width: 250px;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filterButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-blue);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--color-blue);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.filterButton:hover {
+  border-color: var(--color-blue);
+  color: var(--color-blue);
+}
+
+.filterButton:active,
+.filterButton.active {
+  background-color: var(--color-blue);
+  color: white;
+  border-color: var(--color-blue);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+}
+
+.emptyState h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.emptyState p {
+  font-size: 0.875rem;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-lightgray);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--color-sky);
+  box-shadow: 0 0 0 3px rgba(95, 168, 211, 0.1);
+}
+
+.searchInput::placeholder {
+  color: var(--color-gray);
+}
+
+.postsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .container {
+    margin-bottom: 3em;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    padding-left: 0em;
+  }
+
+  .searchWrapper {
+    min-width: auto;
+  }
+
+  .filterButtons {
+    justify-content: center;
+  }
+
+  .filterButton {
+    flex: 1;
+    text-align: center;
+  }
+}

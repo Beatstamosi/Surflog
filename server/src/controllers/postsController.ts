@@ -150,6 +150,42 @@ const addComment = async (req: Request, res: Response) => {
   }
 };
 
+const getAllFeedPosts = async (req: Request, res: Response) => {
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        session: {
+          shared: true, // safety check
+        },
+      },
+      include: {
+        session: {
+          include: {
+            forecast: true,
+            board: true,
+          },
+        },
+        creator: true,
+        likes: {
+          include: {
+            user: true,
+          },
+        },
+        comments: {
+          include: {
+            author: true,
+          },
+        },
+        savedBy: true,
+      },
+    });
+
+    res.status(201).json({ posts });
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
 export {
   getAllUserPosts,
   unlikePost,
@@ -157,4 +193,5 @@ export {
   unsavePost,
   savePost,
   addComment,
+  getAllFeedPosts,
 };
