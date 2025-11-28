@@ -57,12 +57,6 @@
   background: linear-gradient(90deg, var(--color-sky), var(--color-orange));
 }
 
-.boardCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(95, 168, 211, 0.2);
-  border-color: var(--color-sky);
-}
-
 .boardName {
   font-size: 1.25rem;
   font-weight: 700;
