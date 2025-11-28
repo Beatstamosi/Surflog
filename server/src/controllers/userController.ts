@@ -31,4 +31,21 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-export { updateUser, deleteUser };
+const getUserFollowing = async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  try {
+    if (!userId) throw new Error("Missing user Id");
+
+    const userFollowing = await prisma.userFollowing.findMany({
+      where: {
+        userId,
+      },
+    });
+
+    res.status(201).json({ userFollowing });
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+export { updateUser, deleteUser, getUserFollowing };

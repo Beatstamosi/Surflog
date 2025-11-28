@@ -1,4 +1,4 @@
-import type { Post } from "../types/models";
+import type { Post, User } from "../types/models";
 import { useEffect, useState } from "react";
 import style from "./Feed.module.css";
 import { apiClient } from "../../utils/apiClient";
@@ -6,6 +6,7 @@ import DisplayPost from "../DisplayPost/DisplayPost";
 
 export default function Feed() {
   const [posts, setPosts] = useState<Post[] | null>();
+  const [usersFollowing, setUsersFollowing] = useState<User[] | null>();
   const [displayPosts, setDisplayPosts] = useState<Post[] | null>();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
@@ -27,6 +28,22 @@ export default function Feed() {
   useEffect(() => {
     setDisplayPosts(posts);
   }, [posts]);
+
+  // get users following
+  useEffect(() => {
+    const fetchUsersFollowing = async () => {
+      try {
+        const data = await apiClient("/user/following");
+        setUsersFollowing(data.userFollowing);
+      } catch (err) {
+        console.error("Error fetching usersFollowing: ", err);
+      }
+    };
+    fetchUsersFollowing();
+  }, []);
+
+  // set displayPosts based on filter
+  useEffect(() => {}, [activeFilter]);
 
   // Filter based on search query
   const filteredPosts = displayPosts?.filter((post) => {
