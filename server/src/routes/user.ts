@@ -4,6 +4,8 @@ import {
   deleteUser,
   updateUser,
   getPublicUserProfile,
+  unfollowUser,
+  followUser,
 } from "../controllers/userController.js";
 
 const userRouter = Router();
@@ -13,5 +15,7 @@ userRouter.use(validateJWTToken);
 userRouter.put("/update", updateUser);
 userRouter.delete("/delete", deleteUser);
 userRouter.get("/:profileId/public", getPublicUserProfile);
+userRouter.delete("/:profileId/unfollow", unfollowUser);
+userRouter.post("/:profileId/follow", followUser);
 
 export default userRouter;

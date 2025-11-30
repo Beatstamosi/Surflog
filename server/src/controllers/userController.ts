@@ -82,4 +82,52 @@ const getPublicUserProfile = async (req: Request, res: Response) => {
   }
 };
 
-export { updateUser, deleteUser, getPublicUserProfile };
+const followUser = async (req: Request, res: Response) => {
+  const { profileId } = req.params;
+  const userId = req.user?.id;
+
+  try {
+    if (!profileId) throw new Error("Missing profile Id");
+    if (!userId) throw new Error("Missing user Id");
+
+    await prisma.userFollowing.create({
+      data: {
+        userId,
+        followingUserId: parseInt(profileId),
+      },
+    });
+    res.sendStatus(201);
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+const unfollowUser = async (req: Request, res: Response) => {
+  const { profileId } = req.params;
+  const userId = req.user?.id;
+
+  try {
+    if (!profileId) throw new Error("Missing profile Id");
+    if (!userId) throw new Error("Missing user Id");
+
+    await prisma.userFollowing.delete({
+      where: {
+        userId_followingUserId: {
+          userId,
+          followingUserId: parseInt(profileId),
+        },
+      },
+    });
+    res.sendStatus(204);
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+export {
+  updateUser,
+  deleteUser,
+  getPublicUserProfile,
+  followUser,
+  unfollowUser,
+};
