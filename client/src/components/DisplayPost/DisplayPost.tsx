@@ -155,7 +155,7 @@ export default function DisplayPost({
       {/* Post Header with Creator Info */}
 
       <div className={style.postHeader}>
-        <Link to={`/user/${user?.id}`}>
+        <Link to={`/user/${post.creatorId}`}>
           <div className={style.creatorInfo}>
             <img
               src={creator?.profilePicture}
