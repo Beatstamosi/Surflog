@@ -68,7 +68,10 @@ export default function Sidebar() {
         <Link
           to={`/user/${user?.id}`}
           className={`${style.sidebarLink} ${
-            currentPath === `/user/${user?.id}` ? style.active : ""
+            currentPath === `/user/${user?.id}` ||
+            currentPath.includes("edit-profile")
+              ? style.active
+              : ""
           }`}
         >
           <FaUserAstronaut size={"1.5em"} />

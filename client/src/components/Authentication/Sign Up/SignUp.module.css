@@ -103,7 +103,7 @@
   box-shadow: 0 0 0 4px rgba(241, 145, 76, 0.1);
 }
 
-button {
+.signUpForm button {
   width: 100%;
   padding: 1rem;
   font-size: 1rem;
@@ -211,7 +211,7 @@ button {
   }
 
   .signUpFormInput,
-  button {
+  .signUpForm button {
     font-size: 0.95rem;
     padding: 0.875rem;
   }
@@ -261,7 +261,7 @@ button {
     margin-bottom: 1rem;
   }
 
-  button {
+  .signUpForm button {
     padding: 0.75rem;
     font-size: 0.9rem;
   }
@@ -304,7 +304,7 @@ button {
     font-size: 0.85rem;
   }
 
-  button {
+  .signUpForm button {
     padding: 0.625rem;
     font-size: 0.85rem;
   }

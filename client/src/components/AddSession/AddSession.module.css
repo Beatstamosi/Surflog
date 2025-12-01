@@ -47,6 +47,8 @@
   box-sizing: border-box;
   flex: 1;
   border-radius: 0px; /* IMPORTANT: Something overwrites this setting */
+  background-color: var(--bg-primary);
+  padding: 2em;
 }
 
 .sessionDetails {

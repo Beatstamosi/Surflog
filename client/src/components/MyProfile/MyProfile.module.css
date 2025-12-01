@@ -166,7 +166,7 @@
 
 /* Save */
 .btnPrimary {
-  background: var(--color-black);
+  background: var(--color-blue);
   color: white;
   border: none;
 }
