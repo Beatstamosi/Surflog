@@ -4,64 +4,43 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(
-    135deg,
-    var(--color-navy) 0%,
-    var(--color-sky) 70%,
-    var(--color-orange) 100%
-  );
+  background-color: var(--color-blue);
   position: relative;
-  overflow: hidden;
+  padding: 1rem; 
+  width: 100%; 
+  box-sizing: border-box; 
 }
 
-.pageWrapper::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(
-    circle,
-    transparent 20%,
-    rgba(255, 255, 255, 0.1) 20%,
-    rgba(255, 255, 255, 0.1) 22%,
-    transparent 22%
-  );
-  background-size: 20px 20px;
-  animation: backgroundMove 30s linear infinite;
-}
-
-@keyframes backgroundMove {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(20px, 20px);
-  }
-}
-
-form {
+.loginForm {
   width: 100%;
   max-width: 420px;
   background-color: var(--bg-primary);
-  padding: 3rem;
+  padding: 2rem 3rem 3rem 3rem;
   border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 5px 5px rgb(0, 0, 0);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
   z-index: 1;
+  box-sizing: border-box;
+}
+
+.formTitle {
+  margin-bottom: 2em;
+  margin-top: 0em;
+  align-self: center;
+  text-align: center;
+  width: 100%;
 }
 
 .logo {
-  width: 140px;
+  width: 180px;
   margin-bottom: 2rem;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
   transition: transform 0.3s ease;
+  align-self: center;
+  max-width: 100%; /* Ensure logo doesn't overflow */
 }
 
 .logo:hover {
@@ -71,35 +50,26 @@ form {
 .pageWrapper h1 {
   font-size: 2.5rem;
   margin-bottom: 2rem;
-  text-align: center;
-  color: var(--text-invert);
+  text-align: center; /* Changed to center */
+  color: var(--text-primary);
   font-weight: 800;
   position: relative;
+  width: 100%;
 }
 
-.pageWrapper h1::after {
-  content: "";
-  position: absolute;
-  bottom: -0.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 4px;
-  border-radius: 2px;
-}
-
-label {
-  display: block;
+.labelLoginForm {
   margin-bottom: 0.75rem;
+  padding-left: 0.5rem;
   font-weight: 600;
-  color: var(--text-primary);
-  font-size: 0.95rem;
+  color: var(--color-blue);
+  font-size: 0.85rem;
   letter-spacing: 0.5px;
   text-transform: uppercase;
+  width: 100%;
 }
 
-input {
-  width: 100%;
+.loginFormInput {
+  width: 100%; /* Changed from 90% to 100% */
   padding: 1rem;
   margin-bottom: 1.25rem;
   font-size: 1rem;
@@ -109,14 +79,15 @@ input {
   color: var(--text-primary);
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box; /* Include padding in width */
 }
 
-input:hover {
+.loginFormInput:hover {
   background-color: var(--color-bg);
 }
 
-input:focus {
-  border-color: var(--color-orange);
+.loginFormInput:focus {
+  border-color: var(--color-blue);
   outline: none;
   background-color: var(--bg-primary);
   box-shadow: 0 0 0 4px rgba(241, 145, 76, 0.1);
@@ -132,6 +103,7 @@ button {
   cursor: pointer;
   margin-top: 1rem;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .emailWrongWarning {
@@ -145,6 +117,8 @@ button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .emailWrongWarning::before {
@@ -152,14 +126,14 @@ button {
 }
 
 .btnActive {
-  background: var(--color-orange);
+  background: var(--color-blue);
   color: var(--text-invert);
-  box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(3, 35, 240, 0.3);
 }
 
 .btnActive:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
+  box-shadow: 0 4px 15px rgba(3, 35, 240, 0.3);
 }
 
 .btnActive:active {
@@ -173,68 +147,177 @@ button {
   box-shadow: none;
 }
 
-p {
+.loginForm > p {
   margin-top: 2rem;
   color: var(--color-text);
   text-align: center;
   line-height: 1.6;
+  width: 100%;
 }
 
-a {
+.loginForm a {
   color: var(--text-primary);
   font-weight: 600;
   transition: all 0.3s ease;
   position: relative;
   text-decoration: none;
+  display: inline-block;
 }
 
-a:hover {
+.loginForm a:hover {
   color: var(--color-blue);
 }
 
-/* a::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: -2px;
-  left: 0;
-  background-color: var(--color-navy);
-  transform: scaleX(0);
-  transform-origin: bottom right;
-  transition: transform 0.3s ease;
-}
-
-a:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-} */
-
-p {
+.loginForm > p {
   text-align: center;
   margin-top: 1rem;
   font-size: 0.95rem;
   color: var(--text-primary);
 }
 
-a {
-  color: var(--color-orange);
+.loginForm a {
+  color: var(--color-blue);
   text-decoration: none;
 }
 
-/* Responsive tweaks */
-@media (max-width: 668px) {
-  form {
-    padding: 1.25rem;
-    border-radius: 10px;
+/* Responsiveness */
+/* Tablet */
+@media (max-width: 768px) {
+  .pageWrapper {
+    padding: 1rem;
+    justify-content: center;
+    min-height: 100vh;
+    height: auto;
+    overflow-y: auto;
   }
 
-  input,
+  .loginForm {
+    padding: 2rem;
+    margin: 1rem;
+    max-width: 400px;
+    width: calc(100% - 2rem); /* Account for margin */
+  }
+
+  .logo {
+    width: 160px;
+    margin-bottom: 1.5rem;
+  }
+
+  .pageWrapper h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .loginFormInput,
   button {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    padding: 0.875rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .pageWrapper {
+    padding: 0rem;
+    justify-content: flex-start;
+    padding-top: 0rem;
+    height: 100vh;
   }
 
-  h1 {
-    font-size: 1.6rem;
+  .loginForm {
+    padding: 1.5rem;
+    margin: 0rem;
+    width: 100%;
+    border-radius: 16px;
+    border-width: 3px;
+    height: 100vh;
+  }
+
+  .logo {
+    width: 150px;
+    margin-bottom: 1.25rem;
+  }
+
+  .pageWrapper h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .labelLoginForm {
+    font-size: 0.8rem;
+    padding-left: 0.25rem;
+  }
+
+  .loginFormInput {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  button {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .emailWrongWarning {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .loginForm > p {
+    font-size: 0.85rem;
+    margin-top: 1.5rem;
+  }
+}
+
+/* Very small mobile devices */
+@media (max-width: 360px) {
+  .loginForm {
+    padding: 1.25rem;
+    border-radius: 14px;
+  }
+
+  .logo {
+    width: 100px;
+  }
+
+  .pageWrapper h1 {
+    font-size: 1.5rem;
+  }
+
+  .loginFormInput {
+    padding: 0.625rem;
+    font-size: 0.85rem;
+  }
+
+  button {
+    padding: 0.625rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Landscape mode for mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+  .pageWrapper {
+    justify-content: flex-start;
+    padding-top: 1rem;
+    overflow-y: auto;
+  }
+
+  .loginForm {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+  }
+
+  .logo {
+    width: 80px;
+    margin-bottom: 1rem;
+  }
+
+  .pageWrapper h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
   }
 }

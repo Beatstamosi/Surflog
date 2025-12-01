@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import style from "./Login.module.css";
 import { useAuth } from "../useAuth.tsx";
-import logo from "../../../assets/surflog_logo.png";
+import logo from "../../../assets/surflog_logo_bw.png";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -59,13 +59,13 @@ function Login() {
 
   return (
     <div className={style.pageWrapper}>
-      {/* Logo */}
-      <img src={logo} alt="Whisp Logo" className={style.logo} />
-
-      <h1>Login</h1>
       {loginFailed ? <p>Email or password is wrong</p> : null}
-      <form onSubmit={onFormSubmit}>
-        <label htmlFor="email">E-Mail</label>
+      <form onSubmit={onFormSubmit} className={style.loginForm}>
+        <img src={logo} alt="Whisp Logo" className={style.logo} />
+        <h2 className={style.formTitle}>Login</h2>
+        <label htmlFor="email" className={style.labelLoginForm}>
+          E-Mail
+        </label>
         {email && !emailIsValid && (
           <p id="emailWrong" className={style.emailWrongWarning} role="alert">
             Please enter valid E-Mail.
@@ -78,8 +78,11 @@ function Login() {
           type="email"
           value={email}
           onChange={(e) => emailChange(e)}
+          className={style.loginFormInput}
         />
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password" className={style.labelLoginForm}>
+          Password
+        </label>
         <input
           id="password"
           name="password"
@@ -87,6 +90,7 @@ function Login() {
           placeholder="Enter Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className={style.loginFormInput}
         />
         <button
           type="submit"
