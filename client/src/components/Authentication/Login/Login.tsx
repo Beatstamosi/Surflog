@@ -103,7 +103,7 @@ function Login() {
         </button>
         <p>
           If you do not have an account yet,{" "}
-          <Link to="/sign-up">sign up here</Link>
+          <Link to="/sign-up" className={style.linkSignUp}>sign up here</Link>
         </p>
       </form>
     </div>

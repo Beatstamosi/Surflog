@@ -1,8 +1,8 @@
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import style from "./SignUp.module.css";
-import { useNavigate } from "react-router-dom";
 import { useDebouncedCallback } from "use-debounce";
-import logo from "../../../assets/surflog_logo.png";
+import logo from "../../../assets/surflog_logo_bw.png";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -14,6 +14,9 @@ function SignUp() {
   const [passwordMatch, setPasswordMatch] = useState(false);
   const [formFilled, setFormFilled] = useState(false);
   const [userNameExists, setUserNameExists] = useState(false);
+  const [signUpFailed, setSignUpFailed] = useState(false);
+
+  const navigate = useNavigate();
 
   // Password needs to match warning
   useEffect(() => {
@@ -51,8 +54,6 @@ function SignUp() {
     userNameExists,
   ]);
 
-  const navigate = useNavigate();
-
   const resetForm = () => {
     setEmail("");
     setFirstName("");
@@ -80,7 +81,6 @@ function SignUp() {
       const data = await res.json();
 
       if (res.ok) {
-        console.log(data.exists);
         setUserNameExists(data.exists);
       } else {
         console.error("Failed to check if email exists: ", data.error);
@@ -106,6 +106,7 @@ function SignUp() {
 
   const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSignUpFailed(false);
 
     try {
       const res = await fetch(
@@ -130,93 +131,104 @@ function SignUp() {
         resetForm();
         navigate("/login");
       } else {
+        setSignUpFailed(true);
         console.error("Failed to sign up user", data.error);
       }
     } catch (err) {
+      setSignUpFailed(true);
       console.error("Error signing up user:", err);
     }
   };
 
   return (
     <div className={style.pageWrapper}>
-      {/* Logo */}
-      <img src={logo} alt="Whisp Logo" className={style.logo} />
-
-      <form
-        onSubmit={onFormSubmit}
-        className={style.formContainer}
-        aria-label="Sign up form"
-      >
-        <h1>Sign Up</h1>
-
-        <label htmlFor="firstName">First Name</label>
+      {signUpFailed && (
+        <p className={style.signUpFailedWarning} role="alert">
+          Sign up failed. Please try again.
+        </p>
+      )}
+      
+      <form onSubmit={onFormSubmit} className={style.signUpForm}>
+        <img src={logo} alt="Surflog Logo" className={style.logo} />
+        <h2 className={style.formTitle}>Sign Up</h2>
+        
+        <label htmlFor="firstName" className={style.labelSignUpForm}>
+          First Name
+        </label>
         <input
           id="firstName"
           name="firstName"
           type="text"
-          placeholder="Enter your First Name"
-          aria-label="First Name"
+          placeholder="Enter First Name"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
+          className={style.signUpFormInput}
           required
         />
 
-        <label htmlFor="lastName">Last Name</label>
+        <label htmlFor="lastName" className={style.labelSignUpForm}>
+          Last Name
+        </label>
         <input
           id="lastName"
           name="lastName"
           type="text"
-          placeholder="Enter your Last Name"
-          aria-label="Last Name"
+          placeholder="Enter Last Name"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
+          className={style.signUpFormInput}
           required
         />
 
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email" className={style.labelSignUpForm}>
+          E-Mail
+        </label>
         {email && !emailIsValid && (
           <p id="emailWrong" className={style.emailWrongWarning} role="alert">
             Please enter valid E-Mail.
           </p>
         )}
         {email && userNameExists && (
-          <p id="emailExists" className={style.emailWrongWarning} role="alert">
-            User with this E-mail already exists.
+          <p id="emailExists" className={style.emailExistsWarning} role="alert">
+            User with this E-Mail already exists.
           </p>
         )}
         <input
           id="email"
           name="email"
           type="email"
-          placeholder="Enter your Email"
-          aria-label="Email"
+          placeholder="Enter E-Mail"
           value={email}
           onChange={(e) => emailChange(e)}
+          className={style.signUpFormInput}
           required
         />
 
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password" className={style.labelSignUpForm}>
+          Password
+        </label>
         <input
           id="password"
           name="password"
           type="password"
-          placeholder="Enter your password"
-          aria-label="Password"
+          placeholder="Enter Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className={style.signUpFormInput}
           required
         />
 
-        <label htmlFor="confirmPassword">Confirm Password</label>
+        <label htmlFor="confirmPassword" className={style.labelSignUpForm}>
+          Confirm Password
+        </label>
         <input
           id="confirmPassword"
           name="confirmPassword"
           type="password"
-          placeholder="Re-enter your password"
-          aria-label="Confirm Password"
-          aria-describedby={!passwordMatch ? "passwordHelp" : undefined}
+          placeholder="Re-enter Password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          className={style.signUpFormInput}
           required
         />
 
@@ -234,11 +246,14 @@ function SignUp() {
           type="submit"
           disabled={!formFilled}
           className={!formFilled ? style.btnDisabled : style.btnActive}
-          aria-disabled={!formFilled}
-          aria-label="Submit sign up form"
         >
           Sign Up
         </button>
+        
+        <p className={style.signUpFormFooter}>
+          Already have an account?{" "}
+          <Link to="/login" className={style.linkLogin}>Login here</Link>
+        </p>
       </form>
     </div>
   );
