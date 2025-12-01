@@ -60,6 +60,8 @@ const getPublicUserProfile = async (req: Request, res: Response) => {
               },
             },
             creator: true,
+            likes: true,
+            savedBy: true,
           },
         },
       },

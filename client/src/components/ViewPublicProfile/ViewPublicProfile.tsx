@@ -41,7 +41,6 @@ export default function ViewPublicProfile() {
     fetchUser();
   }, [profileId]);
 
-  // TODO
   const handleFollow = async () => {
     if (!profileData) return;
 
