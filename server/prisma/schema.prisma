@@ -138,10 +138,10 @@ model Post {
   id        Int      @id @default(autoincrement())
   posted    DateTime @default(now())
   creatorId Int
-  sessionId Int?     @unique
+  sessionId Int      @unique
 
   creator  User         @relation("UserPosts", fields: [creatorId], references: [id], onDelete: Cascade)
-  session  Session?     @relation(fields: [sessionId], references: [id])
+  session  Session?     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   likes    Like[]       @relation("PostLikes")
   comments Comment[]    @relation("PostComments")
   savedBy  SavedPosts[] @relation("PostSavedBy")
