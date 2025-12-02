@@ -6,7 +6,7 @@
 .header {
   margin-bottom: 2rem;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: baseline;
   gap: 1em;
   flex-wrap: wrap;
@@ -45,9 +45,141 @@
   border-color: var(--color-blue);
 }
 
+.filterSection {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.ratingFilterContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ratingFilterLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.ratingStarsFilter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.starFilter {
+  background: none;
+  border: 2px solid var(--color-lightgray);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  color: var(--color-lightgray);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.starFilter:hover {
+  border-color: var(--color-blue);
+  color: var(--color-blue);
+  transform: translateY(-2px);
+}
+
+.starFilterActive {
+  border-color: var(--color-blue);
+  color: var(--color-blue);
+  background-color: rgba(3, 35, 240, 0.1);
+  box-shadow: 0 2px 8px rgba(3, 35, 240, 0.2);
+}
+
+.starNumber {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.clearFilterButton {
+  background: none;
+  border: 2px solid var(--color-lightgray);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 0.5rem;
+}
+
+.clearFilterButton:hover {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+  background-color: rgba(239, 83, 80, 0.1);
+}
+
+.filterIndicator {
+  grid-column: 1 / -1;
+  background-color: rgba(3, 35, 240, 0.05);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filterText {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.ratingHighlight {
+  color: var(--color-blue);
+  font-weight: 700;
+}
+
+.clearFilterLink {
+  background: none;
+  border: none;
+  color: var(--color-blue);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 1rem;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.clearFilterLink:hover {
+  color: var(--color-blue-dark);
+}
+
+.clearAllFiltersButton {
+  background: var(--color-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.2s ease;
+}
+
+.clearAllFiltersButton:hover {
+  background: var(--color-blue-dark);
+  transform: translateY(-2px);
+}
+
 .searchWrapper {
-  margin-bottom: 1.5rem;
-  flex: 1;
+  width: 20em;
 }
 
 .searchInput {
@@ -134,10 +266,37 @@
 
   .header {
     margin-bottom: 1.5rem;
+    padding-left: 0px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
   }
 
-  .searchWrapper {
-    margin-bottom: 1rem;
+  .ratingFilterContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .ratingStarsFilter {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .starFilter {
+    flex: 1;
+    justify-content: center;
+    padding: 0.2rem;
+  }
+
+  .filterIndicator {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .clearFilterLink {
+    margin-left: 0;
+    margin-top: 0.5rem;
   }
 }
 
@@ -154,6 +313,10 @@
     padding: 0.4rem 0.75rem;
     font-size: 0.75rem;
     flex: 1;
+  }
+
+  .header {
+    justify-content: flex-start;
   }
 
   .searchInput {
