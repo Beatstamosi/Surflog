@@ -467,6 +467,7 @@
 
   .searchSortRow {
     flex-direction: column;
+    align-items: flex-start;
     gap: 1rem;
   }
 
@@ -523,5 +524,11 @@
 
   .emptyState {
     padding: 2rem 1rem;
+  }
+
+  .searchSortRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 }
