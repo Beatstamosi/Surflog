@@ -4,7 +4,7 @@ Surf Log is a full‑stack surf journal application built with Express, React, P
 
 > Note: this repository is a developer-focused project for recording and analyzing surf activity. It's not intended as a public social network.
 
-Live demo: https://surflog-frontend-production.up.railway.app/
+## [LIVE DEMO](https://surflog-frontend-production.up.railway.app/)
 
 ---
 
