@@ -1,17 +1,14 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import style from "./Login.module.css";
-import { useAuth } from "../useAuth.tsx";
 import logo from "../../../assets/surflog_logo_bw.png";
+import { useLogin } from "../useLogin.ts";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [password, setPassword] = useState("");
-  const [loginFailed, setLoginFailed] = useState(false);
-  const { fetchUser } = useAuth();
-
-  const navigate = useNavigate();
+  const { login, isLoading, error } = useLogin();
 
   const emailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const emailInput = e.target;
@@ -26,42 +23,18 @@ function Login() {
 
   const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        }
-      );
-      const data = await res.json();
-
-      if (res.ok) {
-        localStorage.setItem("token", data.token);
-        fetchUser();
-        navigate("/");
-      } else {
-        setLoginFailed(true);
-        console.error("Failed to login user", data.error);
-      }
-    } catch (err) {
-      console.error("Error logging in user:", err);
-    }
+    await login(email, password);
   };
 
   return (
     <div className={style.pageWrapper}>
-      {loginFailed ? <p>Email or password is wrong</p> : null}
+      {error && (
+        <p className={style.loginError} role="alert">
+          {error}
+        </p>
+      )}
       <form onSubmit={onFormSubmit} className={style.loginForm}>
-        <img src={logo} alt="Whisp Logo" className={style.logo} />
+        <img src={logo} alt="Surflog Logo" className={style.logo} />
         <h2 className={style.formTitle}>Login</h2>
         <label htmlFor="email" className={style.labelLoginForm}>
           E-Mail
@@ -79,6 +52,7 @@ function Login() {
           value={email}
           onChange={(e) => emailChange(e)}
           className={style.loginFormInput}
+          disabled={isLoading}
         />
         <label htmlFor="password" className={style.labelLoginForm}>
           Password
@@ -91,19 +65,24 @@ function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className={style.loginFormInput}
+          disabled={isLoading}
         />
         <button
           type="submit"
-          disabled={!emailIsValid || !password}
+          disabled={!emailIsValid || !password || isLoading}
           className={
-            !emailIsValid || !password ? style.btnDisabled : style.btnActive
+            !emailIsValid || !password || isLoading
+              ? style.btnDisabled
+              : style.btnActive
           }
         >
-          Log In
+          {isLoading ? "Logging in..." : "Log In"}
         </button>
         <p>
           If you do not have an account yet,{" "}
-          <Link to="/sign-up" className={style.linkSignUp}>sign up here</Link>
+          <Link to="/sign-up" className={style.linkSignUp}>
+            sign up here
+          </Link>
         </p>
       </form>
     </div>

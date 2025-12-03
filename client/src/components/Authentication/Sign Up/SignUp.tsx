@@ -1,8 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import style from "./SignUp.module.css";
 import { useDebouncedCallback } from "use-debounce";
 import logo from "../../../assets/surflog_logo_bw.png";
+import { useLogin } from "../useLogin";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -15,8 +16,11 @@ function SignUp() {
   const [formFilled, setFormFilled] = useState(false);
   const [userNameExists, setUserNameExists] = useState(false);
   const [signUpFailed, setSignUpFailed] = useState(false);
+  const [signUpErrorMessage, setSignUpErrorMessage] = useState<string | null>(
+    null
+  );
 
-  const navigate = useNavigate();
+  const { login, isLoading: isLoggingIn } = useLogin();
 
   // Password needs to match warning
   useEffect(() => {
@@ -104,10 +108,7 @@ function SignUp() {
     }
   };
 
-  const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSignUpFailed(false);
-
+  const handleSignUp = async () => {
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_BASE_URL}/auth/sign-up`,
@@ -129,29 +130,62 @@ function SignUp() {
 
       if (res.ok) {
         resetForm();
-        navigate("/login");
+        return { success: true };
       } else {
-        setSignUpFailed(true);
-        console.error("Failed to sign up user", data.error);
+        return {
+          success: false,
+          error: data.error || "Sign up failed",
+        };
       }
     } catch (err) {
-      setSignUpFailed(true);
-      console.error("Error signing up user:", err);
+      return {
+        success: false,
+        error: err instanceof Error ? err.message : "Network error",
+      };
     }
   };
 
+  const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSignUpFailed(false);
+    setSignUpErrorMessage(null);
+
+    // Sign up the user
+    const signUpResult = await handleSignUp();
+
+    if (!signUpResult.success) {
+      setSignUpFailed(true);
+      setSignUpErrorMessage(signUpResult.error || "Sign up failed");
+      return;
+    }
+
+    // Auto-login after successful signup
+    const loginResult = await login(email, password, "/edit-profile");
+
+    if (!loginResult.success) {
+      // If auto-login fails, show message but signup was successful
+      setSignUpFailed(true);
+      setSignUpErrorMessage(
+        "Account created successfully! Please login manually."
+      );
+    }
+    // If login is successful, the hook will handle navigation to "/"
+  };
+
+  const isSubmitting = signUpFailed || isLoggingIn;
+
   return (
     <div className={style.pageWrapper}>
-      {signUpFailed && (
+      {signUpFailed && signUpErrorMessage && (
         <p className={style.signUpFailedWarning} role="alert">
-          Sign up failed. Please try again.
+          {signUpErrorMessage}
         </p>
       )}
-      
+
       <form onSubmit={onFormSubmit} className={style.signUpForm}>
         <img src={logo} alt="Surflog Logo" className={style.logo} />
         <h2 className={style.formTitle}>Sign Up</h2>
-        
+
         <label htmlFor="firstName" className={style.labelSignUpForm}>
           First Name
         </label>
@@ -164,6 +198,7 @@ function SignUp() {
           onChange={(e) => setFirstName(e.target.value)}
           className={style.signUpFormInput}
           required
+          disabled={isSubmitting}
         />
 
         <label htmlFor="lastName" className={style.labelSignUpForm}>
@@ -178,6 +213,7 @@ function SignUp() {
           onChange={(e) => setLastName(e.target.value)}
           className={style.signUpFormInput}
           required
+          disabled={isSubmitting}
         />
 
         <label htmlFor="email" className={style.labelSignUpForm}>
@@ -202,6 +238,7 @@ function SignUp() {
           onChange={(e) => emailChange(e)}
           className={style.signUpFormInput}
           required
+          disabled={isSubmitting}
         />
 
         <label htmlFor="password" className={style.labelSignUpForm}>
@@ -216,6 +253,7 @@ function SignUp() {
           onChange={(e) => setPassword(e.target.value)}
           className={style.signUpFormInput}
           required
+          disabled={isSubmitting}
         />
 
         <label htmlFor="confirmPassword" className={style.labelSignUpForm}>
@@ -230,6 +268,7 @@ function SignUp() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           className={style.signUpFormInput}
           required
+          disabled={isSubmitting}
         />
 
         {password && confirmPassword && !passwordMatch && (
@@ -244,15 +283,19 @@ function SignUp() {
 
         <button
           type="submit"
-          disabled={!formFilled}
-          className={!formFilled ? style.btnDisabled : style.btnActive}
+          disabled={!formFilled || isSubmitting}
+          className={
+            !formFilled || isSubmitting ? style.btnDisabled : style.btnActive
+          }
         >
-          Sign Up
+          {isLoggingIn ? "Creating Account..." : "Sign Up"}
         </button>
-        
+
         <p className={style.signUpFormFooter}>
           Already have an account?{" "}
-          <Link to="/login" className={style.linkLogin}>Login here</Link>
+          <Link to="/login" className={style.linkLogin}>
+            Login here
+          </Link>
         </p>
       </form>
     </div>

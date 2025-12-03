@@ -178,10 +178,6 @@
   display: inline-block;
 }
 
-.signUpFormFooter a:hover {
-  color: var(--color-blue);
-}
-
 /* Responsiveness */
 /* Tablet */
 @media (max-width: 768px) {
