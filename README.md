@@ -1,22 +1,59 @@
-# Surf Log (Surf-Journal)
+# 🏄‍♂️ Surf Log (Surf-Journal)
 
-Surf-Journal is a personal surf journal web application for recording and optionally sharing surf sessions and related posts. It stores session metadata (start/end times, duration), user ratings, photos, notes, and forecast information for the recorded spot. When enabled, users may publish session summaries (posts) that include the session details and the forecast snapshot for the spot at the session time.
+Surf Log is a full‑stack surf journal application built with Express, React, Prisma and PostgreSQL. It lets users record detailed surf sessions and — when desired — publish session summaries (posts) that include the session data plus a forecast snapshot for the spot and time.
 
-The application is intended as a self-hosted/experimental project for tracking and analyzing surf activity rather than a public social platform.
+> Note: this repository is a developer-focused project for recording and analyzing surf activity. It's not intended as a public social network.
 
-**Contents**
+Live demo: https://surflog-frontend-production.up.railway.app/
 
-- `client/` — React + Vite front-end
-- `server/` — Express + TypeScript back-end (Prisma + Postgres)
+---
 
-**Quick Start**
+## Features
+
+- 🧑‍💻 User profiles — sign up, edit profile details, upload a profile picture
+- 📅 Session logging — record start/end times, duration, notes, photos and equipment used
+- 🌊 Forecast integration — capture swell, wind, tide and other forecast data for the recorded spot/time
+- 🏄‍♂️ Board management — track your quiver and select which board you rode
+- 🌟 Rating system — rate sessions (1–5 stars)
+- 📊 Filters & analytics — sort and filter by rating, date, duration and spot
+- 🔒 Authentication — secure login/registration (password hashing)
+- 🔄 Optional sharing — publish session summaries as posts with likes/comments
+- 📱 Responsive UI — desktop, tablet and mobile friendly
+
+---
+
+## What users can record and share
+
+- Session timestamps (`startTime`, `endTime`) and calculated duration
+- Spot / forecast snapshot (swell, wind, tide, spot name) associated with the session
+- Numeric/visual rating and free‑text notes
+- Media attachments (photos) and board used
+- Optional published posts that bundle session details with the forecast and commentary
+
+---
+
+## Tech stack
+
+| Layer        | Technology                    |
+| ------------ | ----------------------------- |
+| Frontend     | React (v19), TypeScript, Vite |
+| Backend      | Node.js, Express, TypeScript  |
+| Database     | PostgreSQL (Prisma ORM)       |
+| Auth         | JWT / Passport.js             |
+| File storage | Supabase Storage              |
+| Styling      | CSS Modules                   |
+| Deployment   | Railway                       |
+
+---
+
+## Installation & setup
 
 Requirements:
 
 - Node.js (v18+ recommended)
 - npm, pnpm or yarn
 
-1. Clone the repo
+1. Clone the repository
 
 ```bash
 git clone <repo-url>
@@ -25,106 +62,113 @@ cd Surf-Journal
 
 2. Install dependencies
 
-- Install client dependencies:
-
 ```bash
-cd client
+# Server
+cd server
 npm install
-```
 
-- Install server dependencies:
-
-```bash
-cd ../server
+# Client
+cd ../client
 npm install
 ```
 
 3. Environment variables
 
-- Create `.env` files for `client/` and `server/` if needed. The server typically requires a `DATABASE_URL` for Prisma and any auth secrets you use (for example `JWT_SECRET`). The client may require an API URL variable if you override the default. If your project includes example env files, copy them (for example `cp server/.env.example server/.env`).
+Create `.env` files for the server and client as needed. Example keys:
 
-4. Run the app (development)
+**Server** (`server/.env`)
 
-- Start the server (from `server/`):
+```env
+DATABASE_URL="postgresql://user:pass@localhost:5432/dbname"
+JWT_SECRET="your-jwt-secret"
+PORT=3000
+NODE_ENV=development
+```
+
+**Client** (`client/.env`)
+
+```env
+VITE_API_BASE_URL="http://localhost:3000"
+```
+
+4. Initialize the database (Prisma)
 
 ```bash
 cd server
-npm run dev
-```
-
-- Start the client (from `client/`):
-
-```bash
-cd client
-npm run dev
-```
-
-Open the client in a browser at the URL printed by Vite (typically `http://localhost:5173`). The client proxies API calls to `/api` in development.
-
-**Testing**
-
-- If tests are present in the `client/`, install dev dependencies in the `client/` folder and run:
-
-```bash
-cd client
-npm install
-npm run test        # run once
-npm run test:watch  # watch mode
-```
-
-**Build & Production**
-
-- Build the client:
-
-```bash
-cd client
-npm run build
-```
-
-- Build the server (compile TypeScript):
-
-```bash
-cd server
-npm run build
-```
-
-Start the production server (after build):
-
-```bash
-cd server
-npm start
-```
-
-**Database / Prisma**
-
-- Prisma is used for the server. If you make schema changes, run migrations and generate the client:
-
-```bash
-cd server
-npx prisma migrate dev
+npx prisma migrate dev --name init
 npx prisma generate
 ```
 
-**Project Structure (high level)**
+5. Run the app (development)
 
-- `client/src/` — React components, utilities, and assets
-- `server/src/` — Express routes, controllers, services and Prisma client
-- `prisma/` — Prisma schema and migration files (under `server/prisma`)
+Run backend and frontend in separate terminals:
 
-**Contributing**
+```bash
+# From server/
+npm run dev
 
-1. Create a feature branch: `git checkout -b feat/your-feature`
-2. Make your changes and add tests where possible
-3. Run linters and tests
-4. Open a pull request with a clear description
+# From client/
+npm run dev
+```
 
-**Notes**
+Open the client URL printed by Vite (typically `http://localhost:5173`). The dev client proxies API calls to `/api`.
 
-- This README provides a general developer-focused guide. Refer to any `*.example` env files and the `client/` and `server/` directories for more details.
+---
 
-- Data recorded by the application can include:
-  - Session timestamps (`startTime`, `endTime`) and derived duration
-  - Session rating (numeric/visual stars)
-  - Spot/forecast snapshot at the time of the session (wind, swell, tide, spot name)
-  - Media attachments (photos) and free-text notes about conditions or equipment
-  - Optional published posts that bundle a session with commentary and the forecast snapshot
+## Project structure
+
+```
+surf-log/
+├─ client/                # React front-end
+│  ├─ src/
+│  │  ├─ components/
+│  │  ├─ pages/
+│  │  ├─ utils/
+│  │  └─ types/
+│  └─ package.json
+├─ server/                # Express back-end
+│  ├─ src/
+│  │  ├─ controllers/
+│  │  ├─ routes/
+│  │  ├─ services/
+│  │  └─ utils/
+│  ├─ prisma/
+│  └─ package.json
+└─ README.md
+```
+
+---
+
+## Database schema (high level)
+
+Main models include:
+
+- `User` — accounts and profiles
+- `Session` — surf session records with timestamps, rating, notes, media
+- `Forecast` — snapshot of surf/weather conditions for a session's spot/time
+- `Board` — surfboard details in a user's quiver
+- `Post` — optional shared session summaries with social interactions
+- `Like` / `Comment` — interactions on posts
+
+---
+
+## Future improvements
+
+- Notifications for ideal surf conditions
+- Advanced analytics and session statistics
+- Map integration for session locations
+- Photo gallery for session images
+- Mobile app (React Native)
+
+---
+
+## License
+
+This project is licensed under the MIT License — see the `LICENSE` file for details.
+
+---
+
+## Acknowledgments
+
+- Surfline (forecast provider) — for surf condition data
+- Railway — deployment hosting
