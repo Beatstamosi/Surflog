@@ -145,11 +145,11 @@ export default function DisplayMySession({
 
   if (sessionSharedToggled) {
     const emoji = session.shared === true ? "🚫" : "🤙";
-    const info = session.shared === true ? "unshared" : "shared";
+    const info = session.shared === true ? "Post unshared!" : "Session shared!";
     return (
       <div className={style.sessionSharedToggle}>
         <p>{emoji}</p>
-        <p>Session {info} successfully!</p>
+        <p>{info}</p>
       </div>
     );
   }
