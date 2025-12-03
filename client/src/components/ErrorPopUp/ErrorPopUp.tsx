@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import style from "./ErrorPopup.module.css";
+import style from "./ErrorPopUp.module.css";
 
 interface ErrorPopupProps {
   message: string;
@@ -7,26 +7,26 @@ interface ErrorPopupProps {
   duration?: number; // optional auto-close duration in ms
 }
 
-export default function ErrorPopup({ 
-  message, 
-  onClose, 
-  duration = 5000 
+export default function ErrorPopup({
+  message,
+  onClose,
+  duration = 5000,
 }: ErrorPopupProps) {
   useEffect(() => {
-  console.log("ErrorPopup mounted with message:", message);
-  
-  if (duration > 0) {
-    const timer = setTimeout(() => {
-      console.log("Auto-closing error popup");
-      onClose();
-    }, duration);
+    console.log("ErrorPopup mounted with message:", message);
 
-    return () => {
-      console.log("ErrorPopup cleanup");
-      clearTimeout(timer);
-    };
-  }
-}, [duration, onClose, message]);
+    if (duration > 0) {
+      const timer = setTimeout(() => {
+        console.log("Auto-closing error popup");
+        onClose();
+      }, duration);
+
+      return () => {
+        console.log("ErrorPopup cleanup");
+        clearTimeout(timer);
+      };
+    }
+  }, [duration, onClose, message]);
 
   return (
     <div className={style.errorOverlay}>

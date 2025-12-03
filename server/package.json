@@ -7,7 +7,9 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "create-tables": "node --loader ts-node/esm src/db/createTables.ts"
+    "create-tables": "node --loader ts-node/esm src/db/createTables.ts",
+    "postinstall": "npx prisma generate",
+    "start:migrate": "npx prisma migrate deploy && npm run start"
   },
   "keywords": [],
   "author": "",

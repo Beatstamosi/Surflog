@@ -63,6 +63,7 @@ export const boardBrands = [
   "NSP",
   "NSP Protech",
   "Ocean & Earth",
+  "Olaian",
   "Paragon Surfboards",
   "Pavel Surfboards",
   "Pukas",
@@ -103,5 +104,5 @@ export const boardBrands = [
   "Vessel Surfboards",
   "Vouch Surfboards",
   "Wavestorm",
-  "Wavex"
+  "Wavex",
 ];
