@@ -59,6 +59,10 @@ const routes = [
     path: "/post/:postId",
     element: <ViewPublicPost />,
   },
+  {
+    path: "/error",
+    errorElement: <ErrorPage />,
+  },
 ];
 
 export default routes;
