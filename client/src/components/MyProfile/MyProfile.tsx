@@ -18,12 +18,18 @@ export default function MyProfile() {
   const navigate = useNavigate();
   const logOutHandler = useLogOut();
   const isMobile = useMediaQuery({ maxWidth: 768 });
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in Bytes
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
+    if (file && file.size < MAX_FILE_SIZE) {
       setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
+    } else {
+      alert("File size must be less than 5MB");
+      setSelectedFile(null);
+      setPreviewUrl(user?.profilePicture || null);
+      return;
     }
   };
 
@@ -34,7 +40,7 @@ export default function MyProfile() {
       let profilePictureUrl = user?.profilePicture; // Keep existing if no new file
 
       // Upload new profile picture if selected
-      if (selectedFile) {
+      if (selectedFile && selectedFile.size < MAX_FILE_SIZE) {
         profilePictureUrl = await uploadImageToSupaBase(
           selectedFile,
           user?.id,
@@ -45,6 +51,9 @@ export default function MyProfile() {
         if (user?.profilePicture) {
           await deleteProfilePictureFromStorage(user.profilePicture);
         }
+      } else if (selectedFile && selectedFile.size > MAX_FILE_SIZE) {
+        alert("File size must be less than 5MB");
+        return;
       }
 
       // Update user profile with the signed URL
@@ -117,6 +126,7 @@ export default function MyProfile() {
             </label>
           </div>
         </div>
+        <span className={style.maxFileSize}>Max. file size: 5MB</span>
       </div>
 
       {/* Bio */}
