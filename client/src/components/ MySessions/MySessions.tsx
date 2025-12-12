@@ -81,7 +81,7 @@ export default function MySessions() {
 
   const fetchPosts = async () => {
     try {
-      const data = await apiClient("/posts/feed/all");
+      const data = await apiClient("/posts/user/all");
       setDisplaySessionsOrPosts(data.posts);
     } catch (err) {
       console.error("Error fetching posts: ", err);
