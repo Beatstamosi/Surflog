@@ -30,7 +30,7 @@ export async function getSpot(spot: string): Promise<SurflineSpot | null> {
 
   try {
     const { data } = await surflineClient.get(
-      `/proxy/surfline/search/site?q=${encodeURIComponent(spot)}&type=spot`
+      `/search/site?q=${encodeURIComponent(spot)}&type=spot`
     );
 
     const spotsData = data?.[0];

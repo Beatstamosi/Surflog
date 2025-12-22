@@ -11,9 +11,10 @@ import userRouter from "./routes/user.js";
 import boardsRouter from "./routes/boards.js";
 import sessionRouter from "./routes/session.js";
 import postsRouter from "./routes/posts.js";
-import { surflineClient } from './utils/surflineClient.js';
 
+// Load environment variables FIRST
 dotenv.config();
+
 const app = express();
 
 const allowedOrigins = [
@@ -21,53 +22,35 @@ const allowedOrigins = [
   "http://localhost:5174",
 ];
 
-// 1. MANUAL CORS HANDLER (Railway-proof)
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  
-  if (origin && allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  
-  next();
-});
+// CORS must be configured BEFORE other middleware
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (mobile apps, Postman, etc.)
+      if (!origin) return callback(null, true);
 
-// 2. Express body parsers
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// 3. Proxy route (comes BEFORE auth routes)
-app.get('/proxy/surfline/*', async (req: express.Request, res: express.Response) => {
-  try {
-    const surflinePath = (req.params as any)['0'];
-    const queryParams = new URLSearchParams(req.query as Record<string, string>).toString();
-    const fullSurflineUrl = `/${surflinePath}${queryParams ? '?' + queryParams : ''}`;
-    
-    console.log(`🔄 Proxying: ${fullSurflineUrl}`);
-    
-    const response = await surflineClient.get(fullSurflineUrl);
-    res.json(response.data);
-    
-  } catch (error: any) {
-    console.error('❌ Proxy error:', error.message);
-    res.status(error.response?.status || 500).json({
-      error: 'Proxy request failed',
-      details: error.message
-    });
-  }
-});
-
-// 4. Passport
+// Initialize Passport
 app.use(passport.initialize());
 
-// 5. Routes
+// Authentication Route
 app.use("/auth", authRouter);
 app.use("/forecast", forecastRouter);
 app.use("/user", userRouter);
@@ -75,11 +58,10 @@ app.use("/boards", boardsRouter);
 app.use("/sessions", sessionRouter);
 app.use("/posts", postsRouter);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
+// Serve static files in production
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/dist")));
+
   app.get(/.*/, (req, res) => {
     res.sendFile(path.join(__dirname, "../client/dist/index.html"));
   });

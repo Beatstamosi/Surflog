@@ -186,15 +186,9 @@ export async function getSurfReport(
 
     // Step 3: Fetch all data in parallel
     const [waveRes, windRes, tideRes] = await Promise.all([
-      surflineClient.get(
-        `/proxy/surfline${waveUrl.replace("https://services.surfline.com", "")}`
-      ), // Changed
-      surflineClient.get(
-        `/proxy/surfline${windUrl.replace("https://services.surfline.com", "")}`
-      ), // Changed
-      surflineClient.get(
-        `/proxy/surfline${tideUrl.replace("https://services.surfline.com", "")}`
-      ), // Changed
+      surflineClient.get(waveUrl),
+      surflineClient.get(windUrl),
+      surflineClient.get(tideUrl),
     ]);
 
     const waveData = waveRes.data?.data?.wave ?? [];
