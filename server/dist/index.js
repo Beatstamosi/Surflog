@@ -11,7 +11,7 @@ import userRouter from "./routes/user.js";
 import boardsRouter from "./routes/boards.js";
 import sessionRouter from "./routes/session.js";
 import postsRouter from "./routes/posts.js";
-import { surflineClient } from './utils/surflineClient.js';
+import { surflineClient } from "./utils/surflineClient.js";
 // Load environment variables FIRST
 dotenv.config();
 const app = express();
@@ -22,29 +22,32 @@ const allowedOrigins = [
 // CORS must be configured BEFORE other middleware
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests with no origin (mobile apps, Postman, etc.)
+        // Allow requests with no origin (server-to-server, Railway internal, etc.)
         if (!origin)
             return callback(null, true);
+        // Allow your frontend origins
         if (allowedOrigins.includes(origin)) {
-            callback(null, true);
+            return callback(null, true);
         }
-        else {
-            callback(new Error("Not allowed by CORS"));
-        }
+        // Log blocked origins for debugging
+        console.log(`CORS blocked origin: ${origin}`);
+        callback(new Error("Not allowed by CORS"));
     },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+    exposedHeaders: ["Content-Range", "X-Content-Range"],
     credentials: true,
+    maxAge: 86400, // 24 hours
 }));
 // Add this route BEFORE app.use(express.json()) and other routes
-app.get('/proxy/surfline/*', async (req, res) => {
+app.get("/proxy/surfline/*", async (req, res) => {
     try {
         // 1. Get the Surfline API path - TypeScript needs explicit typing
-        const surflinePath = req.params['0']; // Fixed line
+        const surflinePath = req.params["0"]; // Fixed line
         // 2. Forward all query parameters from the original request
         const queryParams = new URLSearchParams(req.query).toString();
         // 3. Build the full Surfline URL
-        const fullSurflineUrl = `/${surflinePath}${queryParams ? '?' + queryParams : ''}`;
+        const fullSurflineUrl = `/${surflinePath}${queryParams ? "?" + queryParams : ""}`;
         console.log(`🔄 Proxying: ${fullSurflineUrl}`);
         // 4. Use your existing surflineClient (with all the good headers)
         const response = await surflineClient.get(fullSurflineUrl);
@@ -52,11 +55,11 @@ app.get('/proxy/surfline/*', async (req, res) => {
         res.json(response.data);
     }
     catch (error) {
-        console.error('❌ Proxy error:', error.message);
+        console.error("❌ Proxy error:", error.message);
         // Pass through the Surfline error status if available
         res.status(error.response?.status || 500).json({
-            error: 'Proxy request failed',
-            details: error.message
+            error: "Proxy request failed",
+            details: error.message,
         });
     }
 });
