@@ -1,0 +1,14 @@
+export default function createSessionDateString(startTimeSession) {
+    if (!startTimeSession) {
+        return null;
+    }
+    // Format the date from the TimePicker
+    const pad = (num) => String(num).padStart(2, "0");
+    const year = startTimeSession.getFullYear();
+    const month = pad(startTimeSession.getMonth() + 1);
+    const day = pad(startTimeSession.getDate());
+    const hours = pad(startTimeSession.getHours());
+    // Construct the final string: "YYYY-MM-DD HH:MM"
+    const sessionStartString = `${year}-${month}-${day} ${hours}:00`;
+    return sessionStartString;
+}
