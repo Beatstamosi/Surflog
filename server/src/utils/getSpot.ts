@@ -13,7 +13,7 @@ const spotCache = new Map<string, SurflineSpot>();
 /**
  * Fetches the closest matching Surfline spot by name.
  * - Uses Surfline's public search API (no scraping).
- * - Prioritizes exact name matches (case-insensitive).
+ * - Always returns the first result from Surfline's search.
  * - Caches results in memory for faster repeated lookups.
  */
 export async function getSpot(spot: string): Promise<SurflineSpot | null> {
@@ -38,63 +38,23 @@ export async function getSpot(spot: string): Promise<SurflineSpot | null> {
       return null;
     }
 
-    const searchTerm = spot.toLowerCase();
+    // Always take the first result (highest score from Surfline)
+    const firstHit = hits[0];
+    const src = firstHit._source;
 
-    // 1. Try exact match first
-    const exactMatch = hits.find(
-      (hit: any) => hit._source?.name?.toLowerCase() === searchTerm
-    );
-
-    if (exactMatch) {
-      console.log(`Found exact match for "${spot}":`, exactMatch._source?.name);
-      const src = exactMatch._source;
-      const result = {
-        spotId: exactMatch._id,
-        spotName: src.name,
-        href: src.href,
-        region: src.breadCrumbs?.join(" › ") ?? "",
-      };
-      spotCache.set(key, result);
-      return result;
-    }
-
-    // 2. Try partial match (spot name contains search term)
-    const partialMatches = hits.filter((hit: any) =>
-      hit._source?.name?.toLowerCase().includes(searchTerm)
-    );
-
-    if (partialMatches.length > 0) {
-      // Use the highest scored partial match
-      const bestMatch = partialMatches[0];
-      console.log(
-        `Found partial match for "${spot}":`,
-        bestMatch._source?.name
-      );
-      const src = bestMatch._source;
-      const result = {
-        spotId: bestMatch._id,
-        spotName: src.name,
-        href: src.href,
-        region: src.breadCrumbs?.join(" › ") ?? "",
-      };
-      spotCache.set(key, result);
-      return result;
-    }
-
-    // 3. Fall back to first result if nothing matches
-    console.log(
-      `No direct match for "${spot}", using first result:`,
-      hits[0]._source?.name
-    );
-    const src = hits[0]._source;
-    const result = {
-      spotId: hits[0]._id,
+    const result: SurflineSpot = {
+      spotId: firstHit._id,
       spotName: src.name,
       href: src.href,
       region: src.breadCrumbs?.join(" › ") ?? "",
     };
+
+    console.log(`Found spot for "${spot}":`, result.spotName);
+
+    // Cache the result
     spotCache.set(key, result);
     return result;
+
   } catch (err) {
     console.error("Error fetching spot:", err);
     return null;
