@@ -21,25 +21,29 @@ const allowedOrigins = [
   "http://localhost:5174",
 ];
 
-// ✅ 1. CORS MIDDLEWARE FIRST (critical!)
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-  allowedHeaders: ["Content-Type", "Authorization", "Accept"],
-}));
+// 1. MANUAL CORS HANDLER (Railway-proof)
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  
+  next();
+});
 
-// ✅ 2. Handle preflight OPTIONS requests globally
-app.options('*', cors({
-  origin: allowedOrigins,
-  credentials: true,
-}));
-
-// ✅ 3. Body parsers AFTER CORS
+// 2. Express body parsers
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// ✅ 4. ONLY NOW add your proxy route
+// 3. Proxy route (comes BEFORE auth routes)
 app.get('/proxy/surfline/*', async (req: express.Request, res: express.Response) => {
   try {
     const surflinePath = (req.params as any)['0'];
@@ -60,10 +64,10 @@ app.get('/proxy/surfline/*', async (req: express.Request, res: express.Response)
   }
 });
 
-// ✅ 5. Passport and other middleware
+// 4. Passport
 app.use(passport.initialize());
 
-// ✅ 6. Routes
+// 5. Routes
 app.use("/auth", authRouter);
 app.use("/forecast", forecastRouter);
 app.use("/user", userRouter);

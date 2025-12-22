@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import express from "express";
-import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import passport from "passport";
@@ -11,72 +10,59 @@ import userRouter from "./routes/user.js";
 import boardsRouter from "./routes/boards.js";
 import sessionRouter from "./routes/session.js";
 import postsRouter from "./routes/posts.js";
-import { surflineClient } from "./utils/surflineClient.js";
-// Load environment variables FIRST
+import { surflineClient } from './utils/surflineClient.js';
 dotenv.config();
 const app = express();
 const allowedOrigins = [
     "https://surflog-frontend-production.up.railway.app",
     "http://localhost:5174",
 ];
-// CORS must be configured BEFORE other middleware
-app.use(cors({
-    origin: function (origin, callback) {
-        // Allow requests with no origin (server-to-server, Railway internal, etc.)
-        if (!origin)
-            return callback(null, true);
-        // Allow your frontend origins
-        if (allowedOrigins.includes(origin)) {
-            return callback(null, true);
-        }
-        // Log blocked origins for debugging
-        console.log(`CORS blocked origin: ${origin}`);
-        callback(new Error("Not allowed by CORS"));
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
-    exposedHeaders: ["Content-Range", "X-Content-Range"],
-    credentials: true,
-    maxAge: 86400, // 24 hours
-}));
-// Add this route BEFORE app.use(express.json()) and other routes
-app.get("/proxy/surfline/*", async (req, res) => {
+// 1. MANUAL CORS HANDLER (Railway-proof)
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin && allowedOrigins.includes(origin)) {
+        res.header('Access-Control-Allow-Origin', origin);
+    }
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+});
+// 2. Express body parsers
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+// 3. Proxy route (comes BEFORE auth routes)
+app.get('/proxy/surfline/*', async (req, res) => {
     try {
-        // 1. Get the Surfline API path - TypeScript needs explicit typing
-        const surflinePath = req.params["0"]; // Fixed line
-        // 2. Forward all query parameters from the original request
+        const surflinePath = req.params['0'];
         const queryParams = new URLSearchParams(req.query).toString();
-        // 3. Build the full Surfline URL
-        const fullSurflineUrl = `/${surflinePath}${queryParams ? "?" + queryParams : ""}`;
+        const fullSurflineUrl = `/${surflinePath}${queryParams ? '?' + queryParams : ''}`;
         console.log(`🔄 Proxying: ${fullSurflineUrl}`);
-        // 4. Use your existing surflineClient (with all the good headers)
         const response = await surflineClient.get(fullSurflineUrl);
-        // 5. Send the Surfline data back to the client
         res.json(response.data);
     }
     catch (error) {
-        console.error("❌ Proxy error:", error.message);
-        // Pass through the Surfline error status if available
+        console.error('❌ Proxy error:', error.message);
         res.status(error.response?.status || 500).json({
-            error: "Proxy request failed",
-            details: error.message,
+            error: 'Proxy request failed',
+            details: error.message
         });
     }
 });
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-// Initialize Passport
+// 4. Passport
 app.use(passport.initialize());
-// Authentication Route
+// 5. Routes
 app.use("/auth", authRouter);
 app.use("/forecast", forecastRouter);
 app.use("/user", userRouter);
 app.use("/boards", boardsRouter);
 app.use("/sessions", sessionRouter);
 app.use("/posts", postsRouter);
-// Serve static files in production
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../client/dist")));
     app.get(/.*/, (req, res) => {
