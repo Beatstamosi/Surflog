@@ -25,18 +25,35 @@ export async function getSpot(spot: string): Promise<SurflineSpot | null> {
   }
 
   try {
-    const { data } = await surflineClient.get(`/search/site?q=${spot}&type=spot`);
+    const { data } = await surflineClient.get(
+      `/search/site?q=${spot}&type=spot`
+    );
 
-    // Extract the list of spot hits from Surfline's API response
-    const hits = data?.[0]?.hits?.hits ?? [];
-    if (hits.length === 0) return null;
+    // Always get spots from the first array element
+    const spotsResults = data?.[0];
+    if (!spotsResults) {
+      console.log(`No spot search results found for "${spot}"`);
+      return null;
+    }
 
-    // Try to find an exact match first (case-insensitive)
+    const hits = spotsResults?.hits?.hits ?? [];
+
+    if (hits.length === 0) {
+      console.log(`No spot hits found for "${spot}"`);
+      return null;
+    }
+
+    console.log(
+      `Found ${hits.length} spots for "${spot}":`,
+      hits.map((h: any) => h._source?.name)
+    );
+
+    // Try to find exact match (case-insensitive)
     const exactMatch = hits.find(
       (hit: any) => hit._source?.name?.toLowerCase() === spot.toLowerCase()
     );
 
-    // Use the best available match
+    // Use exact match if found, otherwise use first result
     const chosen = exactMatch || hits[0];
     const src = chosen._source;
 
@@ -47,9 +64,10 @@ export async function getSpot(spot: string): Promise<SurflineSpot | null> {
       region: src.breadCrumbs?.join(" › ") ?? "",
     };
 
+    console.log(`Selected spot: "${result.spotName}"`);
+
     // Cache the result
     spotCache.set(key, result);
-
     return result;
   } catch (err) {
     console.error("Error fetching spot:", err);
