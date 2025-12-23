@@ -31,6 +31,7 @@ export default function AddSession() {
   >("ZERO");
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [fetchingForecast, setFetchingForecast] = useState(false);
 
   // Use the error popup hook
   const { showError, closeError, error, isErrorVisible } = useErrorPopup();
@@ -51,10 +52,15 @@ export default function AddSession() {
     }
   }, [forecast, showError]);
 
+  useEffect(() => {
+    if (forecast) setFetchingForecast(false);
+  }, [forecast]);
+
   const handlerGetForecast = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+    setFetchingForecast(true);
 
     try {
       const params = new URLSearchParams({
@@ -66,6 +72,7 @@ export default function AddSession() {
     } catch (err) {
       console.error("Error fetching forecast:", err);
       setForecast(null);
+      setFetchingForecast(false);
       showError(
         "Failed to fetch forecast for this spot and time. Please check the spot name and try again."
       );
@@ -157,7 +164,13 @@ export default function AddSession() {
         <ErrorPopup message={error} onClose={closeError} duration={5000} />
       )}
 
-      {!forecast ? (
+      {fetchingForecast ? (
+        <div className={style.loadingContainer}>
+          <div className={style.spinner}></div>
+          <h2>Fetching your forecast...</h2>
+          <p>We're grabbing the latest data.</p>
+        </div>
+      ) : !forecast ? (
         <>
           <div className={style.header}>
             <h1 className={style.title}>Start New Session</h1>
