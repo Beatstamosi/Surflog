@@ -6,9 +6,9 @@
   align-items: center;
   background-color: var(--color-blue);
   position: relative;
-  padding: 1rem; 
-  width: 100%; 
-  box-sizing: border-box; 
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .loginForm {
@@ -180,6 +180,32 @@
   text-decoration: none;
 }
 
+.contactLink {
+  color: #0070f3;
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.contactLink:hover {
+  border-bottom: 1px solid #0070f3;
+}
+
+.demoNote {
+  font-size: 0.85rem;
+  color: #555;
+  background: #f8f9fa;
+  border-left: 4px solid #0070f3;
+  padding: 12px 16px;
+  margin-top: 24px;
+  border-radius: 6px;
+  line-height: 1.5;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* Responsiveness */
 /* Tablet */
 @media (max-width: 768px) {
@@ -270,8 +296,8 @@
   }
 
   .loginForm > p > .linkSignUp {
-  color: var(--text-invert);
-}
+    color: var(--text-invert);
+  }
 }
 
 /* Very small mobile devices */

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import style from "./Login.module.css";
 import logo from "../../../assets/surflog_logo_bw.png";
@@ -78,12 +77,20 @@ function Login() {
         >
           {isLoading ? "Logging in..." : "Log In"}
         </button>
-        <p>
-          If you do not have an account yet,{" "}
-          <Link to="/sign-up" className={style.linkSignUp}>
-            sign up here
-          </Link>
-        </p>
+        <div className={style.demoNote}>
+          <p>
+            <strong>Project Note:</strong> This is an MVP demonstrating live API
+            integration. Public sign-up is disabled to manage API usage. If you
+            do not have the public account info, please{" "}
+            <a
+              href="mailto:moritz.lued@gmail.com?subject=Test%20Account%20Request&body=Hi,%20I'd%20like%20to%20request%20a%20test%20account%20for%20your%20Surf%20App!"
+              className={style.contactLink}
+            >
+              contact me for a test account
+            </a>
+            .
+          </p>
+        </div>
       </form>
     </div>
   );

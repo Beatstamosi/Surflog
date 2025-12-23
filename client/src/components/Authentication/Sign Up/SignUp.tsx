@@ -6,6 +6,12 @@ import logo from "../../../assets/surflog_logo_bw.png";
 import { useLogin } from "../useLogin";
 
 function SignUp() {
+  // --- PASSPHRASE GATE STATE ---
+  const [passphrase, setPassphrase] = useState("");
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const SIGNUP_SECRET =
+    import.meta.env.VITE_SIGNUP_PASSPHRASE;
+
   const [email, setEmail] = useState("");
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -21,6 +27,19 @@ function SignUp() {
   );
 
   const { login, isLoading: isLoggingIn } = useLogin();
+
+  // --- PASSPHRASE HANDLER ---
+  const handleVerify = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passphrase === SIGNUP_SECRET) {
+      setIsAuthorized(true);
+    } else {
+      setSignUpFailed(true);
+      setSignUpErrorMessage(
+        "Wrong passphrase. Check the GitHub repo for the key! 🤙"
+      );
+    }
+  };
 
   // Password needs to match warning
   useEffect(() => {
@@ -173,6 +192,45 @@ function SignUp() {
   };
 
   const isSubmitting = signUpFailed || isLoggingIn;
+
+  if (!isAuthorized) {
+    return (
+      <div className={style.pageWrapper}>
+        <div className={style.signUpForm}>
+          <img src={logo} alt="Surflog Logo" className={style.logo} />
+          <h2 className={style.formTitle}>Private MVP</h2>
+          <p className={style.gateText}>
+            Public registration is disabled to manage API costs. If you're a
+            developer, find the secret key in the repo to unlock sign-up.
+          </p>
+
+          <form onSubmit={handleVerify} className={style.gateForm}>
+            <input
+              type="text"
+              placeholder="Enter secret passphrase"
+              value={passphrase}
+              onChange={(e) => setPassphrase(e.target.value)}
+              className={style.signUpFormInput}
+              required
+            />
+            {signUpFailed && (
+              <p className={style.signUpFailedWarning}>{signUpErrorMessage}</p>
+            )}
+            <button type="submit" className={style.btnActive}>
+              Unlock Form
+            </button>
+          </form>
+
+          <p className={style.signUpFormFooter}>
+            Just browsing?{" "}
+            <Link to="/login" className={style.linkLogin}>
+              Back to Login
+            </Link>
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={style.pageWrapper}>

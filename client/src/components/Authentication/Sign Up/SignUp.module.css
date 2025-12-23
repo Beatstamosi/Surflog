@@ -178,6 +178,19 @@
   display: inline-block;
 }
 
+.gateText {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.gateForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
 /* Responsiveness */
 /* Tablet */
 @media (max-width: 768px) {
